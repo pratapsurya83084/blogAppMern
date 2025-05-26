@@ -1,11 +1,122 @@
-import React from 'react'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  return (
-    <div>
-     Signup 
-    </div>
-  )
-}
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-export default SignUp
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submit form:", { username, email, password });
+    // Add your signup logic here
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col md:flex-row">
+      {/* Left Side */}
+      <div className="w-full md:w-1/2 relative bg-indigo-100 flex flex-col justify-center items-center p-8">
+        <svg
+          className="absolute top-0 left-0 w-full h-full object-cover opacity-20"
+          viewBox="0 0 1024 1024"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="512" cy="512" r="400" fill="url(#grad)" />
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#6366F1" />
+              <stop offset="100%" stopColor="#EC4899" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <div className="relative z-10 text-center">
+          <h1 className="text-4xl font-extrabold text-indigo-700 mb-4">
+            Pratap's Blog
+          </h1>
+          <p className="text-gray-700 max-w-md mx-auto">
+            This is a blog website. You can sign up with your email and password
+            or continue with Google.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Side - Form */}
+      <div className="w-full md:w-1/2 relative flex items-center justify-center bg-white p-6 md:p-10 overflow-hidden">
+        <svg
+          className="absolute -top-20 -right-20 w-[500px] h-[500px] opacity-10"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="#a78bfa"
+            d="M37.3,-62.5C50.4,-55.1,64.3,-50.5,70.7,-40.5C77.2,-30.5,76.2,-15.2,75.2,-0.2C74.2,14.8,73.2,29.6,66.7,42.3C60.2,54.9,48.1,65.4,34.3,71.1C20.5,76.8,5.2,77.7,-8.4,72.6C-22.1,67.5,-34.1,56.3,-45.2,45.3C-56.3,34.3,-66.5,23.5,-66.4,12.5C-66.2,1.5,-55.6,-9.6,-49.6,-21.2C-43.6,-32.7,-42.1,-44.6,-34.8,-53.3C-27.6,-62.1,-13.8,-67.8,0.8,-69C15.4,-70.3,30.7,-67.9,37.3,-62.5Z"
+            transform="translate(100 100)"
+          />
+        </svg>
+
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md bg-gray-50 shadow-xl rounded-xl p-6 md:p-8 space-y-6 relative z-10"
+        >
+          <h2 className="text-2xl font-bold text-center text-gray-800">
+            Create an Account
+          </h2>
+
+          <input
+            type="text"
+            placeholder="Name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 text-white py-2 rounded hover:brightness-110 transition font-semibold"
+          >
+            Sign Up
+          </button>
+
+          <div className="flex items-center justify-center text-sm text-gray-500">or</div>
+
+          <button
+            type="button"
+            className="w-full border border-gray-300 py-2 rounded flex items-center justify-center hover:bg-gray-100 transition"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Google__G__Logo.svg"
+              alt="Google"
+              className="w-5 h-5 mr-2"
+            />
+            Continue with Google
+          </button>
+
+          <p className="text-sm">
+            Have an account?{" "}
+            <Link to="/sign-in">
+              <span className="text-blue-500">Sign in</span>
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;
