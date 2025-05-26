@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+.dark{
+    background-color: black;
+    color: white;
+}

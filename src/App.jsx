@@ -1,12 +1,26 @@
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Projects from './pages/Projects';
+import SignUp from './pages/SignUp';
+import Signin from './pages/Signin';
+import DashBoard from './pages/DashBoard';
+import Header from './components/Header';
+import React from 'react';
 function App() {
-
-
   return (
-    <div className="">
-      app 
-    </div>
-  )
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/project" element={<Projects />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-in" element={<Signin />} />
+        <Route path="/dashboard" element={<DashBoard />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
