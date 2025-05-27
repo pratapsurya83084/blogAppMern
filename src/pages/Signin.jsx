@@ -1,30 +1,75 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer ,toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  SignInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
 
 const Signin = () => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [Loading , setLoading]=useState(false)
-const navigate = useNavigate();
+  // const [Loading , setLoading]=useState(false)
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const { Loading } = useSelector((state) => state.user);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email||!email) {
-      toast.error("please fill out all fields")
+    if (!email || !email) {
+      toast.error("please fill out all fields");
+      return;
     }
-    console.log("Submit form:", {  email, password });
+    console.log("Submit form:", { email, password });
+    // Add your signup logic here
+    try {
+      console.log(dispatch(signInStart()));
 
+      const api = await axios.post(
+        `http://localhost:4000/api/auth/signin`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+      // console.log("signin suceess :", api.data.success);
+      if (api.data.success == false) {
+        toast.error(api.data.message);
+        dispatch(signInFailure("please fill the form with correct credential"));
+      } else {
+        toast.success(api.data.message);
+        dispatch(SignInSuccess(api.data));
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
+
+  
+    } catch (error) {
+      console.log("error while fetching signup api:", error);
+      dispatch(signInFailure());
+      toast.error("An error occurred during sign-in");
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      <ToastContainer position="top-right" autoClose="2000"hideProgressBar="false"/>
+      <ToastContainer
+        position="top-right"
+        autoClose="2000"
+        hideProgressBar="false"
+      />
       {/* Left Side */}
       <div className="w-full md:w-1/2 relative bg-indigo-100 flex flex-col justify-center items-center p-8">
         <svg
@@ -47,7 +92,7 @@ const navigate = useNavigate();
             Pratap's Blog
           </h1>
           <p className="text-gray-700 max-w-md mx-auto">
-            This is a blog website. You can sign up with your email and password
+            This is a blog website. You can sign In with your email and password
             or continue with Google.
           </p>
         </div>
@@ -55,7 +100,6 @@ const navigate = useNavigate();
 
       {/* Right Side - Form */}
       <div className="w-full md:w-1/2 relative flex items-center justify-center bg-white p-6 md:p-10 overflow-hidden">
-       
         <svg
           className="absolute -top-20 -right-20 w-[500px] h-[500px] opacity-10"
           viewBox="0 0 200 200"
@@ -72,12 +116,10 @@ const navigate = useNavigate();
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-gray-50 shadow-xl rounded-xl p-6 md:p-8 space-y-6 relative z-10"
         >
-          
           <h2 className="text-2xl font-bold text-center text-gray-800">
-         Sign In
+            SignIn
           </h2>
 
-       
           <input
             type="email"
             placeholder="Email"
@@ -94,11 +136,11 @@ const navigate = useNavigate();
           />
 
           <button
-            type="submit"    disabled={Loading}
+            type="submit"
+            disabled={Loading}
             className="w-full bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 text-white py-2 rounded hover:brightness-110 transition font-semibold"
           >
-         
-        {Loading ? 'Signing up...' : 'Signup'}
+            {Loading ? "Signing up..." : "Signin"}
           </button>
 
           <div className="flex items-center justify-center text-sm text-gray-500">
@@ -119,12 +161,11 @@ const navigate = useNavigate();
 
           <p className="text-sm">
             Have an account?{" "}
-            <Link to="/sign-up">
-              <span className="text-blue-500">Sign up</span>
+            <Link to="/sign-in">
+              <span className="text-blue-500">Sign in</span>
             </Link>
           </p>
         </form>
-       
       </div>
     </div>
   );

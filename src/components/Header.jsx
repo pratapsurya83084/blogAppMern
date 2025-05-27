@@ -11,7 +11,7 @@ const Header = () => {
     setDarkMode(!darkMode);
     document.documentElement.classList.toggle("dark");
   };
-  console.log(darkMode);
+  // console.log(darkMode);
 
   return (
     <header
