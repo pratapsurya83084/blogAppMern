@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer ,toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [Loading , setLoading]=useState(false)
-const navigate = useNavigate();
+  const [Loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username||!email||!email) {
-      toast.error("please fill out all fields")
+    if (!username || !email || !email) {
+      toast.error("please fill out all fields");
     }
     console.log("Submit form:", { username, email, password });
     // Add your signup logic here
@@ -21,9 +22,7 @@ const navigate = useNavigate();
       setLoading(true);
       const api = await axios.post(
         `http://localhost:4000/api/auth/signup`,
-        {username,
-        email,
-        password},
+        { username, email, password },
         {
           headers: {
             "Content-type": "application/json",
@@ -31,22 +30,26 @@ const navigate = useNavigate();
         }
       );
       console.log("signup suceess :", api.data.success);
-      if (api.data.success==false) {
-        toast.error("User already exist with that email")
-      }else{
-        toast.success("User created successfully")
-        navigate('/sign-in')
+      if (api.data.success == false) {
+        toast.error("User already exist with that email");
+      } else {
+        toast.success("User created successfully");
+        navigate("/sign-in");
       }
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log("error while fetching signup api:", error);
-           setLoading(false)
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      <ToastContainer position="top-right" autoClose="2000"hideProgressBar="false"/>
+      <ToastContainer
+        position="top-right"
+        autoClose="2000"
+        hideProgressBar="false"
+      />
       {/* Left Side */}
       <div className="w-full md:w-1/2 relative bg-indigo-100 flex flex-col justify-center items-center p-8">
         <svg
@@ -77,7 +80,6 @@ const navigate = useNavigate();
 
       {/* Right Side - Form */}
       <div className="w-full md:w-1/2 relative flex items-center justify-center bg-white p-6 md:p-10 overflow-hidden">
-       
         <svg
           className="absolute -top-20 -right-20 w-[500px] h-[500px] opacity-10"
           viewBox="0 0 200 200"
@@ -94,7 +96,6 @@ const navigate = useNavigate();
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-gray-50 shadow-xl rounded-xl p-6 md:p-8 space-y-6 relative z-10"
         >
-          
           <h2 className="text-2xl font-bold text-center text-gray-800">
             Create an Account
           </h2>
@@ -122,28 +123,18 @@ const navigate = useNavigate();
           />
 
           <button
-            type="submit"    disabled={Loading}
+            type="submit"
+            disabled={Loading}
             className="w-full bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 text-white py-2 rounded hover:brightness-110 transition font-semibold"
           >
-         
-        {Loading ? 'Signing up...' : 'Signup'}
+            {Loading ? "Signing up..." : "Signup"}
           </button>
 
           <div className="flex items-center justify-center text-sm text-gray-500">
             or
           </div>
-
-          <button
-            type="button"
-            className="w-full border border-gray-300 py-2 rounded flex items-center justify-center hover:bg-gray-100 transition"
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Google__G__Logo.svg"
-              alt="Google"
-              className="w-5 h-5 mr-2"
-            />
-            Continue with Google
-          </button>
+<OAuth/>
+         
 
           <p className="text-sm">
             Have an account?{" "}
@@ -152,7 +143,6 @@ const navigate = useNavigate();
             </Link>
           </p>
         </form>
-       
       </div>
     </div>
   );

@@ -10,6 +10,8 @@ import {
   SignInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
+import OAth from "../components/OAuth";
+import OAuth from "../components/OAuth";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -71,8 +73,8 @@ const Signin = () => {
         autoClose="2000"
         hideProgressBar="false"
       />
-      {/* Left Side */}
-      <div className="w-full md:w-1/2 relative bg-indigo-100 flex flex-col justify-center items-center p-8">
+      {/* Left Side        i remove = bg-indigo-100 */}
+      <div className="w-full md:w-1/2 relative  flex flex-col justify-center items-center p-8">
         <svg
           className="absolute top-0 left-0 w-full h-full object-cover opacity-20"
           viewBox="0 0 1024 1024"
@@ -89,10 +91,10 @@ const Signin = () => {
         </svg>
 
         <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-extrabold text-indigo-700 mb-4">
+          <h1 className="text-4xl font-extrabold dark:text-indigo-700 mb-4">
             Pratap's Blog
           </h1>
-          <p className="text-gray-700 max-w-md mx-auto">
+          <p className=" max-w-md mx-auto">
             This is a blog website. You can sign In with your email and password
             or continue with Google.
           </p>
@@ -100,7 +102,7 @@ const Signin = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full md:w-1/2 relative flex items-center justify-center bg-white p-6 md:p-10 overflow-hidden">
+      <div className="w-full md:w-1/2 relative flex items-center justify-center  p-6 md:p-10 overflow-hidden">
         <svg
           className="absolute -top-20 -right-20 w-[500px] h-[500px] opacity-10"
           viewBox="0 0 200 200"
@@ -147,23 +149,12 @@ const Signin = () => {
           <div className="flex items-center justify-center text-sm text-gray-500">
             or
           </div>
-
-          <button
-            type="button"
-            className="w-full border border-gray-300 py-2 rounded flex items-center justify-center hover:bg-gray-100 transition"
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Google__G__Logo.svg"
-              alt="Google"
-              className="w-5 h-5 mr-2"
-            />
-            Continue with Google
-          </button>
+<OAuth/>
 
           <p className="text-sm">
-            Have an account?{" "}
-            <Link to="/sign-in">
-              <span className="text-blue-500">Sign in</span>
+            Have an not account?{" "}
+            <Link to="/sign-up">
+              <span className="text-blue-500">Sign up</span>
             </Link>
           </p>
         </form>
