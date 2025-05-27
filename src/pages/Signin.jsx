@@ -18,7 +18,8 @@ const Signin = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { Loading } = useSelector((state) => state.user);
+  const { Loading ,currentUser} = useSelector((state) => state.user);
+// console.log(currentUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ const Signin = () => {
         dispatch(signInFailure("please fill the form with correct credential"));
       } else {
         toast.success(api.data.message);
-        dispatch(SignInSuccess(api.data));
+        dispatch(SignInSuccess(api.data.user));
         setTimeout(() => {
           navigate("/");
         }, 2000);
