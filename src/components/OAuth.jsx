@@ -73,6 +73,7 @@ const OAuth = () => {
     } catch (error) {
       console.error("Error while handling Google Auth:", error);
     }
+    
   };
 
   return (

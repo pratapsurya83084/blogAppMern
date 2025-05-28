@@ -1,25 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
+  const [isHovered, setIsHovered] = useState(false);
+  console.log(currentUser?.user);
 
   // Toggle dark mode for body
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark");
-  };
-  // console.log(darkMode);
-
+  //   document.documentElement.classList.toggle("dark");
+ 
+  }
   return (
     <header
-      className={`${
-        !darkMode
-          ? "text-black bg-white"
-          : "text-white bg-black shadow-[0_2px_4px_rgba(255,255,255,0.2)]"
-      } shadow-md p-4 sticky top-0 z-50`}
+      className="text-black bg-white shadow-[0_2px_4px_rgba(255,255,255,0.2)]   p-4 sticky top-0 z-50"
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
@@ -42,10 +41,7 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <nav
-          className={`hidden md:flex ${
-            darkMode ? "text-white" || "bg-black" : "text-black" || "bg-white"
-          } space-x-6 items-center`}
-        >
+          className="hidden md:flex text-black bg-white space-x-6 items-center">
           <Link to="/" className=" hover:text-indigo-500">
             Home
           </Link>
@@ -60,12 +56,50 @@ const Header = () => {
           </Link>
 
           {/* Sign Up Button */}
-          <Link
-            to="/sign-up"
-            className="px-4 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition text-sm"
-          >
-            Sign Up
-          </Link>
+          {currentUser?.user ? (
+            <div
+              className="relative"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-indigo-500">
+                <img
+                  src={currentUser?.user.picture || currentUser?.user.ProfilePicture}
+                  alt="profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {isHovered && (
+                <div className="absolute right-0 mt- w-48 bg-white border border-gray-200 rounded shadow-lg z-50">
+                  <div className="px-4 py-2 text-sm text-gray-700 border-b font-medium">
+                    Welcome {currentUser.user.username}
+                  </div>
+                  <Link
+                    to="/dashboard?tab=profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    // onClick={handleSignOut}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="inline-block p-[1.5px] bg-gradient-to-r from-indigo-500 via-pink-500 to-purple-500 rounded">
+              <Link
+                to="/sign-up"
+                className="block px-2 py-1  text- text-xs rounded hover:transition "
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
 
           {/* Dark Mode Toggle */}
           <button
@@ -80,14 +114,50 @@ const Header = () => {
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center space-x-3">
           <FaSearch className="text-gray-600 text-xl" />
-          <div className="inline-block p-[1.5px] bg-gradient-to-r from-indigo-500 via-pink-500 to-purple-500 rounded">
-            <Link
-              to="/sign-up"
-              className="block px-2 py-1  text- text-xs rounded hover:transition "
+          {currentUser?.user ? (
+            <div
+              className="relative"
+              onMouseMove={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
-              Sign Up
-            </Link>
-          </div>
+              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-indigo-500">
+                <img
+                  src={currentUser.user.picture}
+                  alt="profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {isHovered && (
+                <div className="absolute right-0 mt- w-48 bg-white border border-gray-200 rounded shadow-lg z-50">
+                  <div className="px-4 py-2 text-sm text-gray-700 border-b font-medium">
+                    {currentUser.user.username}
+                  </div>
+                  <Link
+                    to="/dashboard?tab=profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    // onClick={handleSignOut}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="inline-block p-[1.5px] bg-gradient-to-r from-indigo-500 via-pink-500 to-purple-500 rounded">
+              <Link
+                to="/sign-up"
+                className="block px-2 py-1  text- text-xs rounded hover:transition "
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
 
           <button onClick={toggleDarkMode} className="text-xl text-gray-600">
             {darkMode ? <FaSun /> : <FaMoon />}
@@ -105,10 +175,7 @@ const Header = () => {
       {/* Mobile Menu Items */}
       {menuOpen && (
         <div
-          className={`md:hidden mt-2 px-4 pb-4 space-y-2 ${
-            darkMode ? "text-white" || "bg-black" : "text-black" || "bg-white"
-          }  rounded `}
-        >
+          className="md:hidden mt-2 px-4 pb-4 space-y-2 text-black bg-white">
           <Link to="/" className="block ">
             Home
           </Link>

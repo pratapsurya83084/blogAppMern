@@ -32,7 +32,7 @@ const Signin = () => {
     console.log("Submit form:", { email, password });
     // Add your signup logic here
     try {
-      console.log(dispatch(signInStart()));
+      dispatch(signInStart())
 
       const api = await axios.post(
         `http://localhost:4000/api/auth/signin`,
@@ -52,7 +52,7 @@ const Signin = () => {
         dispatch(signInFailure("please fill the form with correct credential"));
       } else {
         toast.success(api.data.message);
-        dispatch(SignInSuccess(api.data.user));
+        dispatch(SignInSuccess(api.data));
         setTimeout(() => {
           navigate("/");
         }, 2000);

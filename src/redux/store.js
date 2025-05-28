@@ -3,11 +3,12 @@ import userReducer from "./user/userSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import persistStore from "redux-persist/es/persistStore";
+import themeReducer from "./theme/themeSlice";
 
-
-//persister is used for store (hold) data even reload the page or change the route 
+//persister is used for store (hold) data even reload the page or change the route
 const rootReducer = combineReducers({
   user: userReducer,
+  theme: themeReducer,
 });
 
 const persistConfig = {
@@ -24,6 +25,4 @@ export const store = configureStore({
     getDefaultMiddleware({ serializableCheck: false }),
 });
 
-
-
-export const  persistor = persistStore(store);
+export const persistor = persistStore(store);
