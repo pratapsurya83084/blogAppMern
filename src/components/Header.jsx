@@ -51,7 +51,7 @@ console.log(theme);
           <Link to="/project" className=" hover:text-indigo-500">
             Projects
           </Link>
-          <Link to="/dashboard" className=" hover:text-indigo-500">
+          <Link to="/dashboard?tab=profile" className=" hover:text-indigo-500">
             Dashboard
           </Link>
 
