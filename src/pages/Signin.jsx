@@ -10,7 +10,7 @@ import {
   SignInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
-import OAth from "../components/OAuth";
+
 import OAuth from "../components/OAuth";
 
 const Signin = () => {

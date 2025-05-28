@@ -1,7 +1,13 @@
 import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { SignInSuccess } from "../redux/user/userSlice.js";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+import axios from "axios";
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 533.5 544.3">
     <path
@@ -23,24 +29,60 @@ const GoogleIcon = () => (
   </svg>
 );
 
-
 const OAuth = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleSuccess = async (credentialResponse) => {
+    try {
+      const googleToken = credentialResponse.credential;
 
- const handleSuccess = (credentialResponse) => {
- 
-    const decoded = jwtDecode(credentialResponse.credential);
-    console.log("token googleToken :",decoded); //token print
+      if (!googleToken) {
+        console.error("No Google credential found.");
+        return;
+      }
 
-    // console.log("User Info:", decoded);
-    const googleToken = credentialResponse.credential;
+      const decoded = jwtDecode(googleToken);
+      // console.log(decoded);
 
-  }
+      // console.log("Google User Email:", decoded.email); // optional logging
 
+      const api = await axios.post(
+        "http://localhost:4000/api/auth/google",
+        {
+          email: decoded.email,
+          name: decoded.given_name,
+          picture: decoded.picture,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
+      // console.log("Server Response:", api.data);
+
+      if (api.data.success === true) {
+        dispatch(SignInSuccess(api.data));
+        navigate("/");
+      } else {
+        console.error("Google login failed:", api.data.message);
+        toast.error("something went wrong ");
+      }
+    } catch (error) {
+      console.error("Error while handling Google Auth:", error);
+    }
+  };
 
   return (
-    <div>
-      <GoogleLogin onSuccess={handleSuccess} 
+    <div>  <ToastContainer
+            position="top-right"
+            autoClose="2000"
+            hideProgressBar="false"
+          />
+      <GoogleLogin
+        onSuccess={handleSuccess}
         type="button"
         className="w-full border hover:border-yellow border-red-500 py-2 rounded flex items-center justify-center   dark:text-black  hover:bg-gradient-to-tl to-pink-500 from-orange-500  transition"
       >
