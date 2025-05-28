@@ -5,12 +5,14 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import {useSelector}  from 'react-redux';
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
+ const {theme}=useSelector((state)=>state.theme)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username || !email || !email) {
@@ -44,14 +46,14 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col md:flex-row mb-10">
       <ToastContainer
         position="top-right"
         autoClose="2000"
         hideProgressBar="false"
       />
       {/* Left Side */}
-      <div className="w-full md:w-1/2 relative bg-indigo-100 flex flex-col justify-center items-center p-8">
+      <div className="w-full md:w-1/2 relative  flex flex-col justify-center items-center p-8">
         <svg
           className="absolute top-0 left-0 w-full h-full object-cover opacity-20"
           viewBox="0 0 1024 1024"
@@ -71,7 +73,7 @@ const SignUp = () => {
           <h1 className="text-4xl font-extrabold text-indigo-700 mb-4">
             Pratap's Blog
           </h1>
-          <p className="text-gray-700 max-w-md mx-auto">
+          <p className=" max-w-md mx-auto">
             This is a blog website. You can sign up with your email and password
             or continue with Google.
           </p>
@@ -79,7 +81,7 @@ const SignUp = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full md:w-1/2 relative flex items-center justify-center bg-white p-6 md:p-10 overflow-hidden">
+      <div className="w-full md:w-1/2 relative flex items-center justify-center  p-6 md:p-10 overflow-hidden">
         <svg
           className="absolute -top-20 -right-20 w-[500px] h-[500px] opacity-10"
           viewBox="0 0 200 200"
@@ -94,32 +96,30 @@ const SignUp = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md bg-gray-50 shadow-xl rounded-xl p-6 md:p-8 space-y-6 relative z-10"
+          className="w-full max-w-md dark:border shadow-xl rounded-xl p-6 md:p-8 space-y-6 relative z-10"
         >
-          <h2 className="text-2xl font-bold text-center text-gray-800">
-            Create an Account
-          </h2>
+          <h2 className="text-2xl font-bold text-center ">Create an Account</h2>
 
           <input
             type="text"
             placeholder="Name"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className={` text-black  w-full  px-4 py-2 border  rounded focus:outline-none focus:ring-2 focus:ring-indigo-500`}
           />
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="text-black  w-full px-4 py-2 border  rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="text-black  w-full px-4 py-2 border  rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <button
@@ -133,8 +133,7 @@ const SignUp = () => {
           <div className="flex items-center justify-center text-sm text-gray-500">
             or
           </div>
-<OAuth/>
-         
+          <OAuth />
 
           <p className="text-sm">
             Have an account?{" "}

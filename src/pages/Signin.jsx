@@ -20,8 +20,8 @@ const Signin = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { Loading ,currentUser} = useSelector((state) => state.user);
-// console.log(currentUser);
+  const { Loading, currentUser } = useSelector((state) => state.user);
+  // console.log(currentUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ const Signin = () => {
     console.log("Submit form:", { email, password });
     // Add your signup logic here
     try {
-      dispatch(signInStart())
+      dispatch(signInStart());
 
       const api = await axios.post(
         `http://localhost:4000/api/auth/signin`,
@@ -57,8 +57,6 @@ const Signin = () => {
           navigate("/");
         }, 2000);
       }
-
-  
     } catch (error) {
       console.log("error while fetching signup api:", error);
       dispatch(signInFailure());
@@ -117,9 +115,9 @@ const Signin = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md bg-gray-50 shadow-xl rounded-xl p-6 md:p-8 space-y-6 relative z-10"
+          className="w-full max-w-md dark:border shadow-xl rounded-xl p-6 md:p-8 space-y-6 relative z-10"
         >
-          <h2 className="text-2xl font-bold text-center text-gray-800">
+          <h2 className="text-2xl font-bold text-center ">
             SignIn
           </h2>
 
@@ -128,14 +126,14 @@ const Signin = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="text-black w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="text-black w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <button
@@ -149,7 +147,7 @@ const Signin = () => {
           <div className="flex items-center justify-center text-sm text-gray-500">
             or
           </div>
-<OAuth/>
+          <OAuth />
 
           <p className="text-sm">
             Have an not account?{" "}

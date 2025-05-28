@@ -73,19 +73,20 @@ const OAuth = () => {
     } catch (error) {
       console.error("Error while handling Google Auth:", error);
     }
-    
   };
 
   return (
-    <div>  <ToastContainer
-            position="top-right"
-            autoClose="2000"
-            hideProgressBar="false"
-          />
+    <div>
+      {" "}
+      <ToastContainer
+        position="top-right"
+        autoClose="2000"
+        hideProgressBar="false"
+      />
       <GoogleLogin
         onSuccess={handleSuccess}
         type="button"
-        className="w-full border hover:border-yellow border-red-500 py-2 rounded flex items-center justify-center   dark:text-black  hover:bg-gradient-to-tl to-pink-500 from-orange-500  transition"
+        className=" dark:border  w-full border hover:border-yellow border-red-500 py-2 rounded flex items-center justify-center   dark:text-black  hover:bg-gradient-to-tl to-pink-500 from-orange-500  transition"
       >
         <GoogleIcon />
         <span className="px-1"> Sign in with Google</span>

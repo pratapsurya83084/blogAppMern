@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [mode, setMode] = useState("light");
   const { currentUser } = useSelector((state) => state.user);
   const [isHovered, setIsHovered] = useState(false);
-  console.log(currentUser?.user);
+  const dispatch = useDispatch();
+   const {theme}=useSelector((state)=>state.theme)
+  // console.log(currentUser?.user);
+console.log(theme);
 
-  // Toggle dark mode for body
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  //   document.documentElement.classList.toggle("dark");
- 
-  }
+
   return (
     <header
-      className="text-black bg-white shadow-[0_2px_4px_rgba(255,255,255,0.2)]   p-4 sticky top-0 z-50"
+      className={`${theme==="light"?"dark:text-gray-200 dark:bg-[rgb(16,23,42)] ":"text-black bg-white shadow-lg"} shadow-[0_2px_4px_rgba(255,255,255,0.2)]   p-4 sticky top-0 z-50`}
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
@@ -41,7 +41,7 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <nav
-          className="hidden md:flex text-black bg-white space-x-6 items-center">
+          className="hidden md:flex  space-x-6 items-center">
           <Link to="/" className=" hover:text-indigo-500">
             Home
           </Link>
@@ -102,12 +102,8 @@ const Header = () => {
           )}
 
           {/* Dark Mode Toggle */}
-          <button
-            onClick={toggleDarkMode}
-            className="text-xl text-gray-600"
-            aria-label="Toggle dark mode"
-          >
-            {darkMode ? <FaSun /> : <FaMoon />}
+         <button onClick={()=> dispatch(toggleTheme())} className="text-xl text-gray-600">
+            {theme === "light" ? <FaSun /> : <FaMoon />}
           </button>
         </nav>
 
@@ -122,14 +118,14 @@ const Header = () => {
             >
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-indigo-500">
                 <img
-                  src={currentUser.user.picture}
+                  src={currentUser.user.picture||currentUser?.user.ProfilePicture}
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {isHovered && (
-                <div className="absolute right-0 mt- w-48 bg-white border border-gray-200 rounded shadow-lg z-50">
+                <div className="absolute right-0 mt- w-48 bg-white  dark:text-gray-100  border border-gray-200 rounded shadow-lg z-50">
                   <div className="px-4 py-2 text-sm text-gray-700 border-b font-medium">
                     {currentUser.user.username}
                   </div>
@@ -159,8 +155,8 @@ const Header = () => {
             </div>
           )}
 
-          <button onClick={toggleDarkMode} className="text-xl text-gray-600">
-            {darkMode ? <FaSun /> : <FaMoon />}
+          <button onClick={()=> dispatch(toggleTheme())} className="text-xl text-gray-600">
+            {theme === "light" ? <FaSun /> : <FaMoon />}
           </button>
           <button onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? (
@@ -175,7 +171,7 @@ const Header = () => {
       {/* Mobile Menu Items */}
       {menuOpen && (
         <div
-          className="md:hidden mt-2 px-4 pb-4 space-y-2 text-black bg-white">
+          className="md:hidden mt-2 px-4 pb-4 space-y-2 ">
           <Link to="/" className="block ">
             Home
           </Link>
