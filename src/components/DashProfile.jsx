@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser?.user);
+
 
   return (
     <div className="mt-20 mb-10 flex flex-col items-center px-4">
@@ -19,6 +19,7 @@ const DashProfile = () => {
 
       <div className="w-full max-w-md mt-6 border shadow-xl rounded-xl p-6">
         <form className="space-y-4">
+        
           <input
             type="text"
             defaultValue={currentUser.user.username}
@@ -54,7 +55,9 @@ const DashProfile = () => {
         </form>
 
         <div className="flex justify-between mt-4 text-sm">
-          <button className="text-red-500 hover:underline">Delete Account</button>
+          <button className="text-red-500 hover:underline">
+            Delete Account
+          </button>
           <button className="text-red-500 hover:underline">Sign Out</button>
         </div>
       </div>

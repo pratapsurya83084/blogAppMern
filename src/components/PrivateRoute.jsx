@@ -5,7 +5,7 @@ import {Navigate} from 'react-router-dom';
 const PrivateRoute = ({children}) => {
 
 const {currentUser}=useSelector(state=>state.user);
-  console.log(currentUser);
+  // console.log(currentUser);
   
   return currentUser ? children : <Navigate to="/sign-in" replace />;
 
