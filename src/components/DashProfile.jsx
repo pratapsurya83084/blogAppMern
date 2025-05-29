@@ -6,14 +6,19 @@ import {
   UpdateStart,
   UpdateSuccess,
   UpdateFailure,
+  DeleteUser,
 } from "../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "axios";
+
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
+    username: "" || currentUser?.user.username,
+    email: "" || currentUser?.user.email,
     password: "",
   });
 
@@ -21,14 +26,15 @@ const DashProfile = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   // console.log(currentUser);
-  const userId = currentUser?.user._id;
+
+  const userId = currentUser?.user._id || currentUser?.user.userid;
   // console.log(userId);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-if (!formData) {
-  toast.error('all field are must required ')
-}
+    if (!formData) {
+      toast.error("all field are must required ");
+    }
     try {
       dispatch(UpdateStart());
       const userId = currentUser.user._id; // or currentUser.userId if structured differently
@@ -59,6 +65,93 @@ if (!formData) {
     }
   };
 
+  const DeleteAccount = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to delete this account",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, do it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Confirmed!");
+
+        async function deleteUserConfirm() {
+          try {
+            const api = await axios.delete(
+              `http://localhost:4000/api/user/deleteUser-account/${userId}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                withCredentials: true,
+              }
+            );
+            console.log(api.data);
+            if (api.data.success == true) {
+              dispatch(DeleteUser());
+              navigate("/sign-in");
+            } else {
+              toast.error("user  not found");
+            }
+          } catch (error) {
+            console.log("something went wrong :", error);
+          }
+
+
+        }
+        deleteUserConfirm();
+      }
+    });
+  };
+
+  //SignoutProfile
+  const SignoutProfile = async () => {
+     Swal.fire({
+      title: "Are you sure?",
+      text: "You want to Signout ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, do it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Confirmed!");
+   
+ async function outUser() {
+     try {
+      const api = await axios.post(
+        `http://localhost:4000/api/auth/signout`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(api.data.success);
+      if (api.data.success === true) {
+        dispatch(DeleteUser());
+        
+             toast.success("Logout successFull")
+        setTimeout(()=>{
+            navigate("/sign-in");
+        },1000);
+       
+        }else{
+          toast.error("Logout failed!")
+
+        }
+      
+    } catch (error) {
+      console.log("error in signout user:", error);
+    }
+ }
+ outUser();
+      }
+    });
+  };
+
   return (
     <div className="mt-20 mb-10 flex flex-col items-center px-4">
       <ToastContainer
@@ -80,7 +173,7 @@ if (!formData) {
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="text"
-            value={formData.username}
+            value={formData?.username}
             onChange={handleChange}
             className="w-full text-black border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
@@ -91,7 +184,7 @@ if (!formData) {
 
           <input
             type="email"
-            value={formData.email}
+            value={formData?.email}
             onChange={handleChange}
             className="w-full text-black border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
@@ -102,7 +195,7 @@ if (!formData) {
 
           <input
             type="password"
-            value={formData.password}
+            value={formData?.password}
             onChange={handleChange}
             className="w-full text-black border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
@@ -120,10 +213,18 @@ if (!formData) {
         </form>
 
         <div className="flex justify-between mt-4 text-sm">
-          <button className="text-red-500 hover:underline">
+          <button
+            onClick={DeleteAccount}
+            className="text-red-500 hover:underline"
+          >
             Delete Account
           </button>
-          <button className="text-red-500 hover:underline">Sign Out</button>
+          <button
+            onClick={SignoutProfile}
+            className="text-red-500 hover:underline"
+          >
+            Sign Out
+          </button>
         </div>
       </div>
     </div>
