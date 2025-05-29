@@ -1,12 +1,71 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  UpdateStart,
+  UpdateSuccess,
+  UpdateFailure,
+} from "../redux/user/userSlice";
+import axios from "axios";
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+  // console.log(currentUser);
+  const userId = currentUser?.user._id;
+  // console.log(userId);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+if (!formData) {
+  toast.error('all field are must required ')
+}
+    try {
+      dispatch(UpdateStart());
+      const userId = currentUser.user._id; // or currentUser.userId if structured differently
+
+      const api = await axios.put(
+        `http://localhost:4000/api/user/update/${userId}`,
+        formData,
+        {
+          withCredentials: true, // ✅ Important: send cookies
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // console.log(api.data);
+      if (api.data.success == true) {
+        dispatch(UpdateSuccess(api.data));
+        toast.success(api.data.message);
+      } else {
+        toast.error(api.data.message);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+      dispatch(UpdateFailure(error));
+      toast.error("failed update , try another email ");
+      console.log("Update failed. Please try again.");
+    }
+  };
 
   return (
     <div className="mt-20 mb-10 flex flex-col items-center px-4">
+      <ToastContainer
+        position="top-right"
+        autoClose="2000"
+        hideProgressBar="false"
+      />
       <h1 className="text-2xl md:text-3xl font-bold text-center">Profile</h1>
 
       <div className="mt-4 w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-indigo-500">
@@ -18,37 +77,43 @@ const DashProfile = () => {
       </div>
 
       <div className="w-full max-w-md mt-6 border shadow-xl rounded-xl p-6">
-        <form className="space-y-4">
-        
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="text"
-            defaultValue={currentUser.user.username}
+            value={formData.username}
+            onChange={handleChange}
             className="w-full text-black border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="Username"
+            required
             name="username"
             id="username"
+            placeholder="Username"
           />
 
           <input
             type="email"
-            defaultValue={currentUser.user.email}
+            value={formData.email}
+            onChange={handleChange}
             className="w-full text-black border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="Email"
+            required
             name="email"
             id="email"
+            placeholder="Email"
           />
 
           <input
             type="password"
+            value={formData.password}
+            onChange={handleChange}
             className="w-full text-black border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+            name="password"
+            id="password"
             placeholder="Password"
-            name="Password"
-            id="Password"
           />
 
           <button
             type="submit"
-            className="w-full border border-red-500 hover:text-white  hover:bg-gradient-to-l from-purple-700 to-red-600  font-medium rounded py-2 hover:opacity-90 transition"
+            className="w-full border border-red-500 hover:text-white hover:bg-gradient-to-l from-purple-700 to-red-600 font-medium rounded py-2 hover:opacity-90 transition"
           >
             Update
           </button>
