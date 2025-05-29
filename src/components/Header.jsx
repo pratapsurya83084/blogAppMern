@@ -13,7 +13,7 @@ const Header = () => {
   const dispatch = useDispatch();
    const {theme}=useSelector((state)=>state.theme)
   // console.log(currentUser?.user);
-console.log(theme);
+// console.log(theme);
 
 
   return (
