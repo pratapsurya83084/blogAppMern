@@ -8,12 +8,12 @@ import {
   UpdateFailure,
   DeleteUser,
 } from "../redux/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const DashProfile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser , Loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -21,6 +21,7 @@ const DashProfile = () => {
     email: "" || currentUser?.user.email,
     password: "",
   });
+  console.log(currentUser?.user.isAdmin);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -97,8 +98,6 @@ const DashProfile = () => {
           } catch (error) {
             console.log("something went wrong :", error);
           }
-
-
         }
         deleteUserConfirm();
       }
@@ -107,7 +106,7 @@ const DashProfile = () => {
 
   //SignoutProfile
   const SignoutProfile = async () => {
-     Swal.fire({
+    Swal.fire({
       title: "Are you sure?",
       text: "You want to Signout ?",
       icon: "warning",
@@ -116,38 +115,35 @@ const DashProfile = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         console.log("Confirmed!");
-   
- async function outUser() {
-     try {
-      const api = await axios.post(
-        `http://localhost:4000/api/auth/signout`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      console.log(api.data.success);
-      if (api.data.success === true) {
-        dispatch(DeleteUser());
-        
-             toast.success("Logout successFull")
-        setTimeout(()=>{
-            navigate("/sign-in");
-        },1000);
-       
-        }else{
-          toast.error("Logout failed!")
 
+        async function outUser() {
+          try {
+            const api = await axios.post(
+              `http://localhost:4000/api/auth/signout`,
+              {},
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                withCredentials: true,
+              }
+            );
+            console.log(api.data.success);
+            if (api.data.success === true) {
+              dispatch(DeleteUser());
+
+              toast.success("Logout successFull");
+              setTimeout(() => {
+                navigate("/sign-in");
+              }, 1000);
+            } else {
+              toast.error("Logout failed!");
+            }
+          } catch (error) {
+            console.log("error in signout user:", error);
+          }
         }
-      
-    } catch (error) {
-      console.log("error in signout user:", error);
-    }
- }
- outUser();
+        outUser();
       }
     });
   };
@@ -206,22 +202,32 @@ const DashProfile = () => {
 
           <button
             type="submit"
-            className="w-full border border-red-500 hover:text-white hover:bg-gradient-to-l from-purple-700 to-red-600 font-medium rounded py-2 hover:opacity-90 transition"
+            className="w-full border border-red-500 text-white bg-gradient-to-l from-purple-700 to-red-600 font-medium rounded py-2 hover:opacity-90 transition"
           >
-            Update
+           {Loading?"Loading...":"Update"}
           </button>
+
+               {currentUser?.user.isAdmin === true ? (
+            <Link to={`/create-post`} className="">
+              <button className="mt-1 w-full border border-red-500 text-white bg-gradient-to-l from-purple-700 to-red-600 font-medium rounded py-2 hover:opacity-90 transition">Create a Post</button>
+            </Link>
+          ) : (
+            ""
+          )}
         </form>
 
-        <div className="flex justify-between mt-4 text-sm">
+        <div className="flex justify-between mt-4 text-xs md:text-sm">
           <button
             onClick={DeleteAccount}
             className="text-red-500 hover:underline"
           >
             Delete Account
           </button>
+     
+
           <button
             onClick={SignoutProfile}
-            className="text-red-500 hover:underline"
+            className="text-red-500 hover:underline text-xs md:text-sm"
           >
             Sign Out
           </button>

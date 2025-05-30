@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
-import { useSelector ,useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
-
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { DeleteUser } from "../redux/user/userSlice";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -11,14 +15,64 @@ const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
-   const {theme}=useSelector((state)=>state.theme)
+  const { theme } = useSelector((state) => state.theme);
   // console.log(currentUser?.user);
-// console.log(theme);
+  // console.log(theme);
+    const navigate = useNavigate();
 
+  //SignoutProfile
+  const SignoutProfile = async () => {
+ 
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to Signout ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, do it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Confirmed!");
+
+        async function outUser() {
+          try {
+            const api = await axios.post(
+              `http://localhost:4000/api/auth/signout`,
+              {},
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                withCredentials: true,
+              }
+            );
+            console.log(api.data.success);
+            if (api.data.success === true) {
+              dispatch(DeleteUser());
+
+              toast.success("Logout successFull");
+              setTimeout(() => {
+                navigate("/sign-in");
+              }, 1000);
+            } else {
+              toast.error("Logout failed!");
+            }
+          } catch (error) {
+            console.log("error in signout user:", error);
+          }
+        }
+        outUser();
+      }
+    });
+  };
 
   return (
     <header
-      className={`${theme==="light"?"dark:text-gray-200 dark:bg-[rgb(16,23,42)] ":"text-black bg-white shadow-lg"} shadow-[0_2px_4px_rgba(255,255,255,0.2)]   p-4 sticky top-0 z-50`}
+      className={`${
+        theme === "light"
+          ? "dark:text-gray-200 dark:bg-[rgb(16,23,42)] "
+          : "text-black bg-white shadow-lg"
+      } shadow-[0_2px_4px_rgba(255,255,255,0.2)]   p-4 sticky top-0 z-50`}
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
@@ -40,8 +94,7 @@ const Header = () => {
         </div>
 
         {/* Desktop Menu */}
-        <nav
-          className="hidden md:flex  space-x-6 items-center">
+        <nav className="hidden md:flex  space-x-6 items-center">
           <Link to="/" className=" hover:text-indigo-500">
             Home
           </Link>
@@ -64,7 +117,10 @@ const Header = () => {
             >
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-indigo-500">
                 <img
-                  src={currentUser?.user.picture || currentUser?.user.ProfilePicture}
+                  src={
+                    currentUser?.user.picture ||
+                    currentUser?.user.ProfilePicture
+                  }
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
@@ -82,7 +138,7 @@ const Header = () => {
                     Profile
                   </Link>
                   <button
-                    // onClick={handleSignOut}
+                    onClick={SignoutProfile}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Sign Out
@@ -102,7 +158,10 @@ const Header = () => {
           )}
 
           {/* Dark Mode Toggle */}
-         <button onClick={()=> dispatch(toggleTheme())} className="text-xl text-gray-600">
+          <button
+            onClick={() => dispatch(toggleTheme())}
+            className="text-xl text-gray-600"
+          >
             {theme === "light" ? <FaSun /> : <FaMoon />}
           </button>
         </nav>
@@ -118,7 +177,9 @@ const Header = () => {
             >
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-indigo-500">
                 <img
-                  src={currentUser.user.picture||currentUser?.user.ProfilePicture}
+                  src={
+                    currentUser.user.picture || currentUser?.user.ProfilePicture
+                  }
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
@@ -136,7 +197,7 @@ const Header = () => {
                     Profile
                   </Link>
                   <button
-                    // onClick={handleSignOut}
+                    onClick={SignoutProfile}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Sign Out
@@ -155,7 +216,10 @@ const Header = () => {
             </div>
           )}
 
-          <button onClick={()=> dispatch(toggleTheme())} className="text-xl text-gray-600">
+          <button
+            onClick={() => dispatch(toggleTheme())}
+            className="text-xl text-gray-600"
+          >
             {theme === "light" ? <FaSun /> : <FaMoon />}
           </button>
           <button onClick={() => setMenuOpen(!menuOpen)}>
@@ -170,8 +234,7 @@ const Header = () => {
 
       {/* Mobile Menu Items */}
       {menuOpen && (
-        <div
-          className="md:hidden mt-2 px-4 pb-4 space-y-2 ">
+        <div className="md:hidden mt-2 px-4 pb-4 space-y-2 ">
           <Link to="/" className="block ">
             Home
           </Link>

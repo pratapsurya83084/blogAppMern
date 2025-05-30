@@ -9,6 +9,8 @@ import Header from './components/Header';
 import React from 'react';
 import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
+import CreatePost from './pages/CreatePost';
+import PrivateAdminRoute from './components/PrivateAdminRoute';
 function App() {
   return (
     <Router>
@@ -20,6 +22,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/dashboard" element={ <PrivateRoute> <DashBoard /> </PrivateRoute> } />
+        <Route path="/create-post" element={ <PrivateAdminRoute> <CreatePost /> </PrivateAdminRoute> } />
       </Routes>
       <Footer/>
     </Router>
