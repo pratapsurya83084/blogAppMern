@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute';
 import CreatePost from './pages/CreatePost';
 import PrivateAdminRoute from './components/PrivateAdminRoute';
 function App() {
+  
   return (
     <Router>
       <Header />

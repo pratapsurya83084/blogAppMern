@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { FaUser, FaSignOutAlt } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  FaUser,
+  FaSignOutAlt,
+  FaTachometerAlt,
+  FaComment,
+  FaUsers,
+  FaBlog,
+  FaPooStorm,
+} from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DeleteUser } from "../redux/user/userSlice";
+
 const DashSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [tab, setTab] = useState("");
   const dispatch = useDispatch();
+  const { currentUser, Loading } = useSelector((state) => state.user);
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
@@ -19,6 +29,8 @@ const DashSidebar = () => {
       setTab(tabFromUrl);
     }
   }, [location.search]);
+
+  console.log(currentUser?.user.isAdmin);
 
   const handleTabChange = (newTab) => {
     setTab(newTab);
@@ -76,18 +88,95 @@ const DashSidebar = () => {
         hideProgressBar="false"
       />
       <ul className="flex flex-col space-y-4">
-        <li
-          className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
-            tab === "profile" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
-          }`}
-          onClick={() => handleTabChange("profile")}
-        >
-          <FaUser className="text-lg" />
-          <span>Profile</span>
-          <span className="bg-slate-700 text-xs px-2 py-0.5 rounded ml-auto">
-            user
-          </span>
-        </li>
+        {/* dashboard  visible this tab only Admin*/}
+      {
+        currentUser?.user.isAdmin?  <Link to={"/dashboard?tab=dashboard"}>
+          <li
+            className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+              tab === "dashboard"
+                ? "bg-gray-600 font-bold"
+                : "hover:bg-gray-700"
+            }`}
+            onClick={() => handleTabChange("dashboard")}
+          >
+            <FaTachometerAlt className="text-lg" />
+
+            <span>Dashboard</span>
+          </li>
+        </Link>
+        :
+        ""
+      }
+
+        {/* profile */}
+        <Link to="/dashboard?tab=profile">
+          <li
+            className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+              tab === "profile" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
+            }`}
+            onClick={() => handleTabChange("profile")}
+          >
+            <FaUser className="text-lg" />
+            <span>Profile</span>
+            <span className="bg-slate-700 text-xs px-2 py-0.5 rounded ml-auto">
+             {currentUser?.user.isAdmin?"Admin":"User"}
+            </span>
+          </li>
+        </Link>
+        {/* comment */}
+      {
+           currentUser?.user.isAdmin? 
+             <Link to="/dashboard?tab=comment">
+          <li
+            className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+              tab === "comment" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
+            }`}
+            onClick={() => handleTabChange("comment")}
+          >
+            <FaComment className="text-lg" />
+            <span>Comment</span>
+          </li>
+        </Link>
+           :""
+      }
+      
+
+        {/* Users */}
+        {
+          currentUser?.user.isAdmin? 
+           <Link to="/dashboard?tab=users">
+          <li
+            className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+              tab === "users" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
+            }`}
+            onClick={() => handleTabChange("users")}
+          >
+            <FaUsers className="text-lg" />
+            <span>Users</span>
+          </li>
+        </Link>
+          :""
+        }
+       
+
+        {/* Posts */}
+
+        {currentUser?.user.isAdmin ? (
+          <Link to="/dashboard?tab=post">
+            <li
+              className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+                tab === "post" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
+              }`}
+              onClick={() => handleTabChange("post")}
+            >
+              <FaBlog className="text-lg" />
+              <span>Post</span>
+            </li>
+          </Link>
+        ) : (
+          ""
+        )}
+
         <li
           className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-red-600"
           onClick={SignoutProfile}

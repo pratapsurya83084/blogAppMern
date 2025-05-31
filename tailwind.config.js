@@ -7,6 +7,15 @@ content: [
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }
 
+
+
+
+ {/* Renders formatted HTML */}
+    //   <div
+    //     className="prose max-w-none"
+    //     dangerouslySetInnerHTML={{ __html: blog.content }}
+    //   />
+    // </div>

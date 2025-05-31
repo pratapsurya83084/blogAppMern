@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
-
+import DashPost from '../components/DashPost';
 const DashBoard = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -17,12 +17,16 @@ const DashBoard = () => {
   }, [location.search]);
 
   return (
-   <div className="flex flex-col md:flex-row">
+   <div className="h-screen overflow-hidden flex flex-col md:flex-row">
   <div className="w-full md:w-64">
     <DashSidebar />
   </div>
-  <div className="flex-1 p-4">
+  <div className="flex-1  p-4  overflow-y-auto">
     {tab === "profile" && <DashProfile />}
+    {tab === "post"&& <DashPost/>}
+    {tab === "users"&& ""}
+    {tab === "comment"&& ""}
+    {tab === "dashboard"&& ""}
   </div>
 </div>
 

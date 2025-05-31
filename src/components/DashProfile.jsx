@@ -21,7 +21,7 @@ const DashProfile = () => {
     email: "" || currentUser?.user.email,
     password: "",
   });
-  console.log(currentUser?.user.isAdmin);
+  // console.log(currentUser?.user.isAdmin);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });

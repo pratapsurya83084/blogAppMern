@@ -212,7 +212,7 @@ const CreatePost = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         const slug = slugify(title);
-        setTimeout(() => navigate(`/${slug}`), 1500);
+        setTimeout(() => navigate(`/post/${slug}`), 1500);
       } else {
         toast.error(response.data.message || "Something went wrong.");
       }
