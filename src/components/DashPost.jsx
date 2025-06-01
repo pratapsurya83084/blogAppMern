@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "./Loading";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 const DashPost = () => {
   const [blogs, setBlogs] = useState([]);
@@ -39,14 +41,36 @@ const DashPost = () => {
     fetchBlogs();
   }, []);
 
-  const handleEdit = (postId,userId) => {
-    console.log("Edit post", postId,userId);
+  const handleEdit = async (postId, userId) => {
+    console.log("Edit post", postId, userId);
     // Navigate to edit page or open modal
   };
 
-  const handleDelete = async (postId,userId) => {
-    console.log("Delete post", postId,userId);
-    // Call delete API
+  const handleDelete = async (postId, userId) => {
+    if (!postId || !userId) {
+      toast.error("post not exists or not found");
+      return;
+    }
+    try {
+      const api = await axios.delete(
+        `http://localhost:4000/api/post/delete-post/${postId}/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(api.data);
+      if (api.data.success === true) {
+        toast.success(api.data.message);
+        fetchBlogs();
+      } else {
+        toast.error(api.data.message);
+      }
+    } catch (error) {
+      console.log("post deleting error :", error);
+    }
   };
 
   if (loading) {
@@ -67,6 +91,11 @@ const DashPost = () => {
 
   return (
     <div className="  p-4 overflow-x-auto">
+    <ToastContainer
+           position="top-right"
+           autoClose="2000"
+           hideProgressBar="false"
+         />
       <h1 className="text-3xl font-bold mb-6">All Blog Posts</h1>
 
       {currentUser?.user.isAdmin && blogs?.length === 0 ? (
@@ -114,7 +143,7 @@ const DashPost = () => {
                   <td className="px-4 py-3">{blog.category}</td>
                   <td className="px-4 py-3">
                     <button
-                      onClick={() => handleEdit(blog._id,currentUser.user._id)}
+                      onClick={() => handleEdit(blog._id, currentUser.user._id)}
                       className="text-indigo-600 hover:underline font-medium"
                     >
                       Edit
@@ -122,7 +151,9 @@ const DashPost = () => {
                   </td>
                   <td className="px-4 py-3">
                     <button
-                      onClick={() => handleDelete(blog._id,currentUser.user._id)}
+                      onClick={() =>
+                        handleDelete(blog._id, currentUser.user._id)
+                      }
                       className="text-red-600 hover:underline font-medium"
                     >
                       Delete
