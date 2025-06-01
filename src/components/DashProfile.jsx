@@ -149,7 +149,7 @@ const DashProfile = () => {
   };
 
   return (
-    <div className="mt-20 mb-10 flex flex-col items-center px-4">
+    <div className=" mt-20 mb-10 flex flex-col items-center px-4">
       <ToastContainer
         position="top-right"
         autoClose="2000"
