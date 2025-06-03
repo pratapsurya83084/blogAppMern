@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
 import CreatePost from './pages/CreatePost';
 import PrivateAdminRoute from './components/PrivateAdminRoute';
+import UpdatePost from './pages/UpdatePost';
 function App() {
   
   return (
@@ -24,6 +25,8 @@ function App() {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/dashboard" element={ <PrivateRoute> <DashBoard /> </PrivateRoute> } />
         <Route path="/create-post" element={ <PrivateAdminRoute> <CreatePost /> </PrivateAdminRoute> } />
+        <Route path="/update-post/:postId" element={ <PrivateAdminRoute> <UpdatePost/> </PrivateAdminRoute> } />
+     
       </Routes>
       <Footer/>
     </Router>

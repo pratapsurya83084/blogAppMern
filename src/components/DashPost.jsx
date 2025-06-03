@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 const DashPost = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,10 +42,7 @@ const DashPost = () => {
     fetchBlogs();
   }, []);
 
-  const handleEdit = async (postId, userId) => {
-    console.log("Edit post", postId, userId);
-    // Navigate to edit page or open modal
-  };
+ 
 
   const handleDelete = async (postId, userId) => {
     if (!postId || !userId) {
@@ -142,12 +140,12 @@ const DashPost = () => {
                   <td className="px-4 py-3">{blog.title}</td>
                   <td className="px-4 py-3">{blog.category}</td>
                   <td className="px-4 py-3">
-                    <button
-                      onClick={() => handleEdit(blog._id, currentUser.user._id)}
+                   <Link to={`/update-post/${blog._id}`}> 
+                   <button
                       className="text-indigo-600 hover:underline font-medium"
                     >
                       Edit
-                    </button>
+                    </button></Link>
                   </td>
                   <td className="px-4 py-3">
                     <button
