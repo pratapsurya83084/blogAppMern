@@ -22,7 +22,13 @@ const DashPost = () => {
           withCredentials: true,
         }
       );
-
+      const token = response.data.token;
+      if (token === "expire" || response.data.success === false) {
+        toast.error(response.data.message || "Unauthorized or session expired");
+        console.log("Invalid or missing token:", token);
+        setLoading(false); // important to stop loading
+        return;
+      }
       if (response.data.totalPosts > 7) {
         setShowMore(true);
       }
@@ -41,8 +47,6 @@ const DashPost = () => {
   useEffect(() => {
     fetchBlogs();
   }, []);
-
- 
 
   const handleDelete = async (postId, userId) => {
     if (!postId || !userId) {
@@ -89,11 +93,11 @@ const DashPost = () => {
 
   return (
     <div className="  p-4 overflow-x-auto">
-    <ToastContainer
-           position="top-right"
-           autoClose="2000"
-           hideProgressBar="false"
-         />
+      <ToastContainer
+        position="top-right"
+        autoClose="2000"
+        hideProgressBar="false"
+      />
       <h1 className="text-3xl font-bold mb-6">All Blog Posts</h1>
 
       {currentUser?.user.isAdmin && blogs?.length === 0 ? (
@@ -140,12 +144,11 @@ const DashPost = () => {
                   <td className="px-4 py-3">{blog.title}</td>
                   <td className="px-4 py-3">{blog.category}</td>
                   <td className="px-4 py-3">
-                   <Link to={`/update-post/${blog._id}`}> 
-                   <button
-                      className="text-indigo-600 hover:underline font-medium"
-                    >
-                      Edit
-                    </button></Link>
+                    <Link to={`/update-post/${blog._id}`}>
+                      <button className="text-indigo-600 hover:underline font-medium">
+                        Edit
+                      </button>
+                    </Link>
                   </td>
                   <td className="px-4 py-3">
                     <button

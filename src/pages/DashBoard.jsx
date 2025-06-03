@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
 import DashPost from '../components/DashPost';
+import Users from "../components/Users";
 const DashBoard = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -10,7 +11,7 @@ const DashBoard = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
-    console.log(tabFromUrl);
+    // console.log(tabFromUrl);
     if (tabFromUrl) {
       setTab(tabFromUrl);
     }
@@ -24,7 +25,7 @@ const DashBoard = () => {
   <div className="flex-1  p-4  overflow-y-auto">
     {tab === "profile" && <DashProfile />}
     {tab === "post"&& <DashPost/>}
-    {tab === "users"&& ""}
+    {tab === "users"&& <Users/>}
     {tab === "comment"&& ""}
     {tab === "dashboard"&& ""}
   </div>

@@ -23,6 +23,7 @@ const UpdatePost = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { postId } = useParams();
+  // console.log(file.name);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -85,35 +86,44 @@ const UpdatePost = () => {
     postFormData.append("content", htmlContent);
     if (file) postFormData.append("image", file);
     const userId = currentUser.user._id;
-    console.log(userId);
+    // console.log(userId);
 
     try {
       setLoading(true);
+      // console.log(postFormData.title);
 
       const response = await axios.put(
-        `http://localhost:4000/api/post/updatepost/${postId}/${userId}`, // 🔁 Use `update-post` here if updating
+        `http://localhost:4000/api/post/updatepost/${postId}/${userId}`,
         postFormData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
           withCredentials: true,
         }
       );
+      console.log(response.data);
 
       if (response.data.success) {
         toast.success(response.data.message);
         const slug = slugify(title);
         setTimeout(() => navigate(`/post/${slug}`), 1500);
       } else {
-        toast.error(
-          response.data.message,
-          "or select new image" || "Something went wrong."
-        );
-        console.log(response.data.message);
+        // console.log(response.data.token);
+        
+        if (response.data.token) {
+          toast.error(response.data.message || "Something went wrong.");
+          setTimeout(() => {
+            navigate("/sign-in");
+          }, 2000);
+        }
+        //  console.log(response.data.message);
       }
     } catch (error) {
       toast.error(
         error?.response?.data?.message || "Failed to update post. Try again."
       );
+
       console.error("Error updating post:", error);
     } finally {
       setLoading(false);
