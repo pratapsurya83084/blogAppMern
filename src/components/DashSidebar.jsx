@@ -21,6 +21,7 @@ const DashSidebar = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState("");
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
   const { currentUser, Loading } = useSelector((state) => state.user);
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -81,7 +82,13 @@ const DashSidebar = () => {
     });
   };
   return (
-    <div className="w-full md:w-64 md:min-h-screen bg-gray-800 text-white p-4">
+    <div
+      className={`w-full md:w-64 md:min-h-screen ${
+        theme == "dark"
+          ? "text-black shadow-2xl border border-gray-300"
+          : "bg-slate-800"
+      }   p-4`}
+    >
       <ToastContainer
         position="top-right"
         autoClose="2000"
@@ -89,75 +96,77 @@ const DashSidebar = () => {
       />
       <ul className="flex flex-col space-y-4">
         {/* dashboard  visible this tab only Admin*/}
-      {
-        currentUser?.user.isAdmin?  <Link to={"/dashboard?tab=dashboard"}>
-          <li
-            className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
-              tab === "dashboard"
-                ? "bg-gray-600 font-bold"
-                : "hover:bg-gray-700"
-            }`}
-            onClick={() => handleTabChange("dashboard")}
-          >
-            <FaTachometerAlt className="text-lg" />
+        {currentUser?.user.isAdmin ? (
+          <Link to={"/dashboard?tab=dashboard"}>
+            <li
+              className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+                tab === "dashboard"
+                      ? "bg-gray-400 font-bold"
+                  : "hover:bg-gray-300"
+              }`}
+              onClick={() => handleTabChange("dashboard")}
+            >
+              <FaTachometerAlt className="text-lg" />
 
-            <span>Dashboard</span>
-          </li>
-        </Link>
-        :
-        ""
-      }
+              <span>Dashboard</span>
+            </li>
+          </Link>
+        ) : (
+          ""
+        )}
 
         {/* profile */}
         <Link to="/dashboard?tab=profile">
           <li
             className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
-              tab === "profile" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
+              tab === "profile" 
+              ? "bg-gray-400 font-bold"
+                  : "hover:bg-gray-300"
             }`}
             onClick={() => handleTabChange("profile")}
           >
             <FaUser className="text-lg" />
             <span>Profile</span>
             <span className="bg-slate-700 text-xs px-2 py-0.5 rounded ml-auto">
-             {currentUser?.user.isAdmin?"Admin":"User"}
+              {currentUser?.user.isAdmin ? "Admin" : "User"}
             </span>
           </li>
         </Link>
         {/* comment */}
-      {
-           currentUser?.user.isAdmin? 
-             <Link to="/dashboard?tab=comment">
-          <li
-            className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
-              tab === "comment" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
-            }`}
-            onClick={() => handleTabChange("comment")}
-          >
-            <FaComment className="text-lg" />
-            <span>Comment</span>
-          </li>
-        </Link>
-           :""
-      }
-      
+        {currentUser?.user.isAdmin ? (
+          <Link to="/dashboard?tab=comment">
+            <li
+              className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+                tab === "comment"
+                  ? "bg-gray-400 font-bold"
+                  : "hover:bg-gray-300"
+              }`}
+              onClick={() => handleTabChange("comment")}
+            >
+              <FaComment className="text-lg" />
+              <span>Comment</span>
+            </li>
+          </Link>
+        ) : (
+          ""
+        )}
 
         {/* Users */}
-        {
-          currentUser?.user.isAdmin? 
-           <Link to="/dashboard?tab=users">
-          <li
-            className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
-              tab === "users" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
-            }`}
-            onClick={() => handleTabChange("users")}
-          >
-            <FaUsers className="text-lg" />
-            <span>Users</span>
-          </li>
-        </Link>
-          :""
-        }
-       
+        {currentUser?.user.isAdmin ? (
+          <Link to="/dashboard?tab=users">
+            <li
+              className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+                tab === "users" ? "bg-gray-400 font-bold" : "hover:bg-gray-300"
+              }`}
+              onClick={() => handleTabChange("users")}
+            >
+              <FaUsers className="text-lg" />
+              <span>Users</span>
+            </li>
+          </Link>
+        ) : (
+          ""
+        )}
 
         {/* Posts */}
 
@@ -165,7 +174,9 @@ const DashSidebar = () => {
           <Link to="/dashboard?tab=post">
             <li
               className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
-                tab === "post" ? "bg-gray-600 font-bold" : "hover:bg-gray-700"
+                tab === "post" 
+       ? "bg-gray-400 font-bold"
+                  : "hover:bg-gray-300"
               }`}
               onClick={() => handleTabChange("post")}
             >
@@ -178,7 +189,7 @@ const DashSidebar = () => {
         )}
 
         <li
-          className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-red-600"
+          className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-red-400"
           onClick={SignoutProfile}
         >
           <FaSignOutAlt className="text-lg" />

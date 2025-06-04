@@ -4,7 +4,8 @@ import Loading from "./Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
+
 const DashPost = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,8 +13,13 @@ const DashPost = () => {
   const [showmore, setShowMore] = useState(false);
   const [postLength, setPostLength] = useState(7);
   const [showLess, setShowLess] = useState(false);
+    const { theme } = useSelector((state) => state.theme);
+    // console.log(theme);
   // console.log(showLess);
+ const navigate = useNavigate();
 
+//  console.log(blogs);
+ 
   const fetchBlogs = async () => {
     try {
       const response = await axios.get(
@@ -104,8 +110,8 @@ const DashPost = () => {
         <p className="text-gray-500">No posts found.</p>
       ) : (
         <div className=" shadow-md rounded-lg  border ">
-          <table className="min-w-full text-sm text-left text-gray-700 bg-white">
-            <thead className="bg-indigo-600 text-white">
+          <table className={`min-w-full text-sm text-left `} >
+            <thead className={`${theme=="dark"?"text-black bg-gray-400":"text-white bg-gray-700"}`}>
               <tr>
                 <th className="px-4 py-3">Sr. No</th>
                 <th className="px-4 py-3">Date Posted</th>
@@ -116,14 +122,12 @@ const DashPost = () => {
                 <th className="px-4 py-3">Delete</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={`${theme=="dark"?"text-black bg-white":"text-white bg-gray-700"}`}>
               {blogs?.slice(0, postLength).map((blog, index) => (
-                <tr
+                <tr  
                   key={blog._id}
                   className={
-                    index % 2 === 0
-                      ? "bg-gray-50 hover:bg-gray-100"
-                      : "bg-white hover:bg-gray-100"
+                  theme=="dark" ? " hover:bg-gray-100 "   : "bg-slate-800 hover:bg-slate-900"
                   }
                 >
                   <td className="px-4 py-3">{index + 1}</td>
@@ -134,7 +138,7 @@ const DashPost = () => {
                       day: "numeric",
                     })}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3" onClick={() => navigate(`/post/${blog.slug}`)}>
                     <img
                       src={blog.image}
                       alt="post"

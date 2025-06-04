@@ -70,7 +70,7 @@ const Header = () => {
     <header
       className={`${
         theme === "light"
-          ? "dark:text-gray-200 dark:bg-[rgb(16,23,42)] "
+          ? "dark:text-gray-200 bg-slate-800 "
           : "text-black bg-white shadow-lg"
       } shadow-[0_2px_4px_rgba(255,255,255,0.2)]   p-4 sticky top-0 z-50`}
     >
