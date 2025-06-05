@@ -3,13 +3,15 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
 import { useSelector } from "react-redux";
+import CalltoAction from "../components/CalltoAction";
+import CommentAdd from "../components/CommentAdd";
 
 const PostPage = () => {
   const [post, setPost] = useState(null);
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const { theme } = useSelector((state) => state.theme);
-  console.log(theme);
+  // console.log(theme);
 
   const plainText = slug
     .replace(/-/g, " ")
@@ -40,6 +42,7 @@ const PostPage = () => {
 
     fetchPost();
   }, [slug]);
+// console.log(post);
 
   if (loading || !post) {
     return <Loading />;
@@ -87,7 +90,7 @@ const PostPage = () => {
 
         {/* Post Content */}
         <div
-          className={`prose prose-lg max-w-none text-justify leading-loose
+          className={`prose prose-lg max-w-none text-justify leading-loose text-sm md:text-xl
             ${theme === "dark" ? "text-black" : "text-white prose-headings:text-white"}
             `}
         >
@@ -95,6 +98,12 @@ const PostPage = () => {
             className="post-content"
             dangerouslySetInnerHTML={{ __html: post?.content }}
           />
+        </div>
+        <div>
+          <CalltoAction/>
+        </div>
+        <div>
+          <CommentAdd postId={post?._id}/>
         </div>
       </div>
     </main>

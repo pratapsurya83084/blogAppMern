@@ -31,7 +31,7 @@ const DashSidebar = () => {
     }
   }, [location.search]);
 
-  console.log(currentUser?.user.isAdmin);
+  // console.log(currentUser?.user.isAdmin);
 
   const handleTabChange = (newTab) => {
     setTab(newTab);

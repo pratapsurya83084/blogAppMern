@@ -17,17 +17,20 @@ const DashPost = () => {
     // console.log(theme);
   // console.log(showLess);
  const navigate = useNavigate();
+// console.log(currentUser);
 
 //  console.log(blogs);
  
   const fetchBlogs = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/post/getallpost?userId=${currentUser?.user._id}`,
+        `http://localhost:4000/api/post/getallpost`,
         {
           withCredentials: true,
         }
       );
+      // console.log(response.data);
+      
       const token = response.data.token;
       if (token === "expire" || response.data.success === false) {
         toast.error(response.data.message || "Unauthorized or session expired");
@@ -106,7 +109,7 @@ const DashPost = () => {
       />
       <h1 className="text-3xl font-bold mb-6">All Blog Posts</h1>
 
-      {currentUser?.user.isAdmin && blogs?.length === 0 ? (
+      {!currentUser?.user.isAdmin && blogs?.length === 0 ? (
         <p className="text-gray-500">No posts found.</p>
       ) : (
         <div className=" shadow-md rounded-lg  border ">
