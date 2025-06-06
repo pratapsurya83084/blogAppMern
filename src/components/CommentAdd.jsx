@@ -28,7 +28,7 @@ const CommentAdd = ({ postId }) => {
 
   useEffect(() => {
     fetchComment();
-  }, [postId]);
+  }, [postId ,comments]);
 
   // ✅ Add new comment
   const handleAddComment = async (e) => {
@@ -67,7 +67,7 @@ const CommentAdd = ({ postId }) => {
 
   // ✅ Like/unlike comment
   const handelLikes = async (commentId) => {
-   console.log(commentId);
+  //  console.log(commentId);
    
     try {
       if (!currentUser?.user) {
@@ -85,14 +85,14 @@ const CommentAdd = ({ postId }) => {
           withCredentials: true,
         }
       );
-console.log(api.data);
+// console.log(api.data);
 
       if (api.data.token === "expire") {
         toast.error(api.data.message);
         setTimeout(() => navigate("/sign-in"), 1500);
         return;
       }
-console.log(comments);
+// console.log(comments);
 
       // ✅ Update likes in state
       setComments((prevComments) =>
