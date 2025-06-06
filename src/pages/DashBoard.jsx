@@ -18,11 +18,11 @@ const DashBoard = () => {
   }, [location.search]);
 
   return (
-   <div className="h-screen overflow-hidden flex flex-col md:flex-row">
+   <div className="md:h-screen overflow-hidden flex flex-col md:flex-row">
   <div className="w-full md:w-64">
     <DashSidebar />
   </div>
-  <div className="flex-1  p-4  overflow-y-auto">
+  <div className="flex-1  p-4  ">
     {tab === "profile" && <DashProfile />}
     {tab === "post"&& <DashPost/>}
     {tab === "users"&& <Users/>}

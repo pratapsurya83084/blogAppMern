@@ -9,13 +9,14 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import ThemeProvider from "./components/ThemeProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <PersistGate persistor={persistor}>
-    <Provider store={store}>
-      <ThemeProvider>
-        <GoogleOAuthProvider clientId="1088716956562-mu4g66468smrh8rf03cth8lhtegbrujo.apps.googleusercontent.com">
-          <App />
-        </GoogleOAuthProvider>
-      </ThemeProvider>
-    </Provider>
+<Provider store={store}>
+  <PersistGate loading={null} persistor={persistor}>
+    <ThemeProvider>
+      <GoogleOAuthProvider clientId="1088716956562-mu4g66468smrh8rf03cth8lhtegbrujo.apps.googleusercontent.com">
+        <App />
+      </GoogleOAuthProvider>
+    </ThemeProvider>
   </PersistGate>
+</Provider>
+
 );

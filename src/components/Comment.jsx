@@ -5,6 +5,8 @@ import { FaThumbsUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+
 const Comment = ({ comment, onLike }) => {
   const [isEdit, setisEdit] = useState(false);
   const [user, setUser] = useState(null);
@@ -88,6 +90,52 @@ const Comment = ({ comment, onLike }) => {
     }
   };
 
+  // deleteComment by id Specific
+  const DeleteComment = async (commentId) => {
+    // console.log("id receive : ", commentId);
+
+    if (!commentId) {
+      toast.error("failed delete comment");
+      return;
+    }
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You Want to delete this Comment",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        async function deletComment() {
+          try {
+            const response = await axios.delete(
+              `http://localhost:4000/api/comment/delete-comment/${commentId}`,
+
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                withCredentials: true,
+              }
+            );
+            if (response.data.token == "expire") {
+              toast.error(response.data.message);
+              return;
+            }
+            // console.log(response.data);
+          } catch (error) {
+            console.log("error while deleting comment : ", error);
+            // toast.error(response.error.data.message);
+          }
+        }
+        deletComment();
+      }
+    });
+  };
+
   return (
     <div className="flex gap-4 p-2 border-b border-gray-200">
       <Toaster position="top-right" reverseOrder={false} />
@@ -155,10 +203,19 @@ const Comment = ({ comment, onLike }) => {
               {currentUser?.user.isAdmin ||
               (currentUser?.user.userid || currentUser?.user._id) ==
                 comment.userId ? (
-                <div>
-                  <button onClick={() => editButton(comment?.comment)}>
-                    edit
-                  </button>
+                <div className="flex gap-4">
+                  <div>
+                    <button onClick={() => editButton(comment?.comment)}>
+                      edit
+                    </button>
+                  </div>
+
+                  {/* delete comment */}
+                  <div>
+                    <button onClick={() => DeleteComment(comment?._id)}>
+                      delete
+                    </button>
+                  </div>
                 </div>
               ) : (
                 ""
