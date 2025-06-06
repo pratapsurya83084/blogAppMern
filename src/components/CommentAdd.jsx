@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Await, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comment from "./Comment";
+
 const CommentAdd = ({ postId }) => {
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
-  // console.log(currentUser);
   const navigate = useNavigate();
   const [text, setText] = useState("");
-  const [Error, setError] = useState("");
-  // console.log(postId);
-  // console.log(text);
-  // console.log(comments?.length==0 || comments == undefined ?"yes zero":"no 0");
 
-  //fetch all comment api
+  // ✅ Fetch all comments
   const fetchComment = async () => {
     try {
       const api = await axios.get(
@@ -25,30 +21,23 @@ const CommentAdd = ({ postId }) => {
       if (api.data.success === true) {
         setComments(api.data.comment);
       }
-      // console.log(api.data.comment);
     } catch (error) {
-      console.log("error fetching post comment :", error);
+      console.log("Error fetching post comments:", error);
     }
   };
 
   useEffect(() => {
     fetchComment();
-  }, []);
+  }, [postId]);
 
-  //add new Comment api
+  // ✅ Add new comment
   const handleAddComment = async (e) => {
     e.preventDefault();
-    if (text.length == 0) {
-      return;
-    }
+    if (!text.trim()) return;
 
     const userId = currentUser?.user.userid || currentUser?.user._id;
 
     try {
-      if (text === "") {
-        return;
-      }
-
       const api = await axios.post(
         `http://localhost:4000/api/comment/create-comment`,
         { comment: text, userId, postId },
@@ -60,70 +49,115 @@ const CommentAdd = ({ postId }) => {
         }
       );
 
-      // console.log(api.data);
-      if (api.data.token == "expire") {
+      if (api.data.token === "expire") {
         toast.error(api.data.message);
-        setTimeout(() => {
-          navigate("/sign-in");
-        }, 1500);
+        setTimeout(() => navigate("/sign-in"), 1500);
+        return;
       }
+
       if (api.data.success === true) {
         toast.success(api.data.message);
         setText("");
         fetchComment();
       }
     } catch (error) {
-      console.log("error for creating comment : ", error);
+      console.log("Error creating comment:", error);
     }
   };
 
-  //getpost-Comment
+  // ✅ Like/unlike comment
+  const handelLikes = async (commentId) => {
+   console.log(commentId);
+   
+    try {
+      if (!currentUser?.user) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const api = await axios.put(
+        `http://localhost:4000/api/comment/like-post/${commentId}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+console.log(api.data);
+
+      if (api.data.token === "expire") {
+        toast.error(api.data.message);
+        setTimeout(() => navigate("/sign-in"), 1500);
+        return;
+      }
+console.log(comments);
+
+      // ✅ Update likes in state
+      setComments((prevComments) =>
+        prevComments?.map((comment) => 
+        
+          comment?._id === commentId
+            ? {
+                ...comment,
+                likes: api.data.comment.likes,
+                numberOfLikes: api.data.comment.likes?.length,
+              }
+            : comment
+        )
+      );
+    } catch (error) {
+      console.log("Error liking comment:", error);
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto my-12 px-4">
-      <ToastContainer
-        position="top-right"
-        autoClose="2000"
-        hideProgressBar="false"
-      />
+      <ToastContainer position="top-right" autoClose={2000} />
+
+      {/* User info */}
       {currentUser?.user ? (
-        <div className="flex gap-2">
-          <p>Signed in as :</p>
+        <div className="flex gap-2 items-center mb-2">
+          <p>Signed in as:</p>
           <img
-            className="h-7 w-7 rounded-full "
-            src={currentUser?.user.ProfilePicture || currentUser?.user.picture}
-            alt=""
+            className="h-7 w-7 rounded-full"
+            src={
+              currentUser.user.ProfilePicture || currentUser.user.picture || "/default-avatar.png"
+            }
+            alt="User"
           />
           <Link
-            to={"/dashboard?tab=profile"}
+            to="/dashboard?tab=profile"
             className="hover:underline text-teal-500"
           >
-            @{currentUser?.user.username}
+            @{currentUser.user.username}
           </Link>
         </div>
       ) : (
         <div>
-          You must be signed in
-          <Link to={"/sign-in"}>Sign In</Link>
+          You must be signed in <Link to="/sign-in" className="text-indigo-600 underline">Sign In</Link>
         </div>
       )}
-      <h3 className="text-2xl font-bold mb-6">💬 Leave a Comment</h3>
 
-      {/* Add Comment Form */}
+      {/* Add comment form */}
       {currentUser?.user && (
         <form
           onSubmit={handleAddComment}
-          className="space-y-4  p-4 rounded-lg shadow-lg dark:border border-gray-700"
+          className="space-y-4 p-4 rounded-lg shadow-lg dark:border border-gray-700"
         >
           <textarea
             placeholder="Write your comment..."
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={4}
+            maxLength={200}
             required
-            className="w-full px-4 py-2 rounded-md border focus:outline-none text-black "
+            className="w-full px-4 py-2 rounded-md border focus:outline-none text-black"
           ></textarea>
-          <div>{200 - text.length} characters remaining</div>
+          <div className="text-sm text-gray-500">
+            {200 - text.length} characters remaining
+          </div>
 
           <button
             type="submit"
@@ -131,34 +165,28 @@ const CommentAdd = ({ postId }) => {
           >
             Add Comment
           </button>
-          {setError}
         </form>
       )}
 
-      {/* List of Comments */}
-      <div className="mt-8 space-y-6">
-        {comments != undefined ? (
-          <div className="flex gap-2">
-            Comments :{" "}
-            <p className="px-2 rounded  border"> {comments?.length}</p>
-          </div>
-        ) : (
-          ""
-        )}
-        {comments?.length == 0 || comments == undefined ? (
+      {/* Comment count */}
+      {comments && (
+        <div className="flex gap-2 mt-8">
+          <span>Comments:</span>
+          <p className="px-2 rounded border">{comments.length}</p>
+        </div>
+      )}
+
+      {/* Comment list */}
+      <div className="mt-4 space-y-6">
+        {comments.length === 0 ? (
           <p className="text-gray-500 italic">No comments yet. Be the first!</p>
         ) : (
-          comments?.map((comment) => (
-            <Comment key={comment?._id} comment={comment} />
-
-            // <div
-            //   key={comment.id}
-            //   className="border-l-4 border-indigo-600 pl-4 py-2 bg-white shadow rounded"
-            // >
-            //   <p className="font-semibold text-gray-500">{comment.comment}</p>
-            //   <p className="text-sm text-gray-500">{new Date(comment.createdAt).toLocaleDateString()}</p>
-            //   <p className="mt-1">{comment.text}</p>
-            // </div>
+          comments.map((comment) => (
+            <Comment
+              key={comment?._id}
+              comment={comment}
+              onLike={handelLikes}
+            />
           ))
         )}
       </div>
