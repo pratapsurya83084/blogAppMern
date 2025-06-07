@@ -46,7 +46,7 @@ const DashPost = () => {
       setBlogs(response.data.BlogPost || []);
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.error("Error fetching blogs:", error);
       setLoading(false);

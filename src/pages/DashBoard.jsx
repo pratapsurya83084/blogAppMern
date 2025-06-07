@@ -4,6 +4,8 @@ import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
 import DashPost from '../components/DashPost';
 import Users from "../components/Users";
+import DashCommentSection from "../components/DashCommentSection";
+import DashBoardOverviews from "../components/DashBoardOverviews";
 const DashBoard = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -18,18 +20,22 @@ const DashBoard = () => {
   }, [location.search]);
 
   return (
-   <div className="md:h-screen overflow-hidden flex flex-col md:flex-row">
-  <div className="w-full md:w-64">
+   <div className="flex flex-col md:flex-row md:h-screen overflow-hidden">
+  {/* Sidebar */}
+  <div className="w-full md:w-64 bg-gray-100 border-r">
     <DashSidebar />
   </div>
-  <div className="flex-1  p-4  ">
+
+  {/* Main Content */}
+  <div className="flex-1 p-4 overflow-y-auto">
     {tab === "profile" && <DashProfile />}
-    {tab === "post"&& <DashPost/>}
-    {tab === "users"&& <Users/>}
-    {tab === "comment"&& ""}
-    {tab === "dashboard"&& ""}
+    {tab === "post" && <DashPost />}
+    {tab === "users" && <Users />}
+    {tab === "comment" && <DashCommentSection />}
+    {tab === "dashboard" && <DashBoardOverviews/>}
   </div>
 </div>
+
 
   );
 };

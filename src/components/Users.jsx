@@ -29,7 +29,7 @@ const Users = () => {
         setUsers(response.data.users);
         setTimeout(() => {
           setLoading(false);
-        }, 1500);
+        }, 500);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -100,7 +100,7 @@ const Users = () => {
             {Users?.map((user, index) => (
               <tr
                 key={index}
-                className="border-t hover:bg-gray-100  hover:text-black   transition-colors "
+                className="border-t      transition-colors "
               >
                 <td className="py-2 px-4">
                   <img

@@ -5,12 +5,14 @@ import Loading from "../components/Loading";
 import { useSelector } from "react-redux";
 import CalltoAction from "../components/CalltoAction";
 import CommentAdd from "../components/CommentAdd";
-
+import PostCard from "../components/PostCard";
 const PostPage = () => {
   const [post, setPost] = useState(null);
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const { theme } = useSelector((state) => state.theme);
+  const [recentPost, setRecentPost] = useState(null);
+
   // console.log(theme);
 
   const plainText = slug
@@ -42,7 +44,24 @@ const PostPage = () => {
 
     fetchPost();
   }, [slug]);
-// console.log(post);
+  // console.log(post);
+
+  useEffect(() => {
+    const fetchRecentPost = async () => {
+      try {
+        const api = await axios.get(
+          `http://localhost:4000/api/post/getallpost?limit=3`
+        );
+        // console.log(api.data.BlogPost);
+        if (api.data) {
+          setRecentPost(api.data.BlogPost);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchRecentPost();
+  }, []);
 
   if (loading || !post) {
     return <Loading />;
@@ -91,7 +110,11 @@ const PostPage = () => {
         {/* Post Content */}
         <div
           className={`prose prose-lg max-w-none text-justify leading-loose text-sm md:text-xl
-            ${theme === "dark" ? "text-black" : "text-white prose-headings:text-white"}
+            ${
+              theme === "dark"
+                ? "text-black"
+                : "text-white prose-headings:text-white"
+            }
             `}
         >
           <div
@@ -100,10 +123,23 @@ const PostPage = () => {
           />
         </div>
         <div>
-          <CalltoAction/>
+          <CalltoAction />
         </div>
         <div>
-          <CommentAdd postId={post?._id}/>
+          <CommentAdd postId={post?._id} />
+        </div>
+        {/* here  recent blogPost */}
+        <div className="mt-20">
+          <h1 className="text-3xl font-bold text-center">Recent Articles</h1>
+
+          <div className="grid grid-cols md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-6 mt-10 md:max-w-6xl ">
+            {recentPost &&
+              recentPost.map((post) => (
+                <div key={post._id} className="h-full">
+                  <PostCard post={post} />
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </main>
