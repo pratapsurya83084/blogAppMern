@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Loading from "./Loading";
 
 const DashBoardOverviews = () => {
   const [User, setUsers] = useState();
@@ -19,7 +20,9 @@ const DashBoardOverviews = () => {
   const [Posts, setPosts] = useState();
   const [lastMonthpost, setlastMonthPost] = useState();
   const { currentUser } = useSelector((state) => state.user);
-  //   console.log(lastMonthpost);
+  const [loading, setLoading] = useState(true);
+  //     console.log(Posts);
+  // console.log(Comments);
 
   const fetchUsers = async () => {
     try {
@@ -71,7 +74,7 @@ const DashBoardOverviews = () => {
 
       // console.log(api.data);
       if (api.data.success === true) {
-        setPosts(api.data.BlogPost);
+        setPosts(api.data?.BlogPost);
         setlastMonthPost(api.data?.lastMonthPosts);
       }
     } catch (error) {
@@ -80,6 +83,9 @@ const DashBoardOverviews = () => {
   };
 
   useEffect(() => {
+  setTimeout(()=>{
+  setLoading(false)
+  },1000)
     if (currentUser?.user.isAdmin) {
       //if admin is logged then fetch
       fetchUsers();
@@ -88,8 +94,15 @@ const DashBoardOverviews = () => {
     }
   }, []); //call only onece when component or page is mount
 
+
+if (loading) {
+  return(
+  <Loading/>
+)
+}
+
   return (
-    <div>
+    <div className="mb-10">
       {/* flex 3 box */}
       <div className="flex flex-col md:flex-row justify-center items-center mt-5 md:p-5 gap-4">
         {/* Box 1: Total Users */}
@@ -200,7 +213,7 @@ const DashBoardOverviews = () => {
       </div>
 
       {/* render here recentpost blogs */}
-      <div className="md:72 lg:mx-80  md:p-5 mt-5">
+      <div className="md:72 lg:mx-40  md:p-5 mt-5">
         <div className="border shadow-lg p-5 rounded-lg w-full">
           <div className="flex justify-between items-center ">
             <h1>Recent Posts</h1>
@@ -213,15 +226,19 @@ const DashBoardOverviews = () => {
               {" "}
               <p>POST IMAGE</p> <p>POST TITLE</p> <p>CATEGORY</p>
             </div>
-            {Comments?.map((comment, index) => {
+            {Posts?.map((post, index) => {
               return (
                 <div
                   key={index}
                   className="flex  justify-between  space-y- mt-2"
                 >
-                  <p className="h- w- mt- ">post image</p>
-                  <p>post title</p>
-                  <p className="p-2">category</p>
+                  <img
+                    src={post?.image}
+                    className="mt-3 h-16 w-16 object-cover rounded-xl"
+                    alt=""
+                  />
+                  <p className="p-4">{post?.title}</p>
+                  <p className="p-2">{post?.category}</p>
                 </div>
               );
             })}

@@ -25,7 +25,7 @@ const CalltoAction = () => {
         <p className="mt-6">
           or{" "}
           <Link
-            to="/blogs"
+            to="/allpost"
             className="underline font-semibold hover:text-yellow-200"
           >
             Explore more blogs →

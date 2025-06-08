@@ -14,18 +14,20 @@ import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollTotop from "./components/ScrollTotop";
+import AllPosts from "./pages/AllPosts";
 function App() {
   return (
     <Router>
-        <ScrollTotop/>
+      <ScrollTotop />
       <Header />
-    
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/project" element={<Projects />} />
+
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<Signin />} />
+        <Route path="/allpost" element={<AllPosts />} />
         <Route path="/post/:slug" element={<PostPage />} />
 
         <Route

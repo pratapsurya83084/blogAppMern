@@ -101,10 +101,8 @@ const Header = () => {
           <Link to="/about" className=" hover:text-indigo-500">
             About
           </Link>
-          <Link to="/project" className=" hover:text-indigo-500">
-            Projects
-          </Link>
-          <Link to={`/dashboard`} className=" hover:text-indigo-500">
+       
+          <Link to={`/dashboard?tab=dashboard`} className=" hover:text-indigo-500">
             Dashboard
           </Link>
 
@@ -241,10 +239,8 @@ const Header = () => {
           <Link to="/about" className="block ">
             About
           </Link>
-          <Link to="/project" className="block ">
-            Projects
-          </Link>
-          <Link to={`/dashboard`} className="block ">
+       
+          <Link to={`/dashboard?tab=dashboard`} className="block ">
             Dashboard
           </Link>
         </div>
