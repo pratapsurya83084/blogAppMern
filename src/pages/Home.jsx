@@ -27,7 +27,7 @@ const BlogHomePage = () => {
       console.log("error occure while fetching Posts :", error);
     }
   };
-  console.log(Posts);
+  // console.log(Posts);
 
   useEffect(() => {
     fetchPosts();

@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = "dist"  # or "build" if using Create React App
+
+[dev]
+  command = "npm run dev"
+  targetPort = 5173  # for Vite; use 3000 if CRA
+  port = 8888
+  framework = "vite"  # or "react"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

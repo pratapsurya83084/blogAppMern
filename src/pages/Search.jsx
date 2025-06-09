@@ -16,6 +16,8 @@ const Search = () => {
   const [posts, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get("searchTerm");
@@ -28,9 +30,14 @@ const Search = () => {
       category: categoryFromUrl || "",
     });
 
-    const fetchPost = async () => {
+    fetchPost();
+  }, [location.search]);
+
+
+   const fetchPost = async () => {
+     const urlParams = new URLSearchParams(location.search);
       const searchQuery = urlParams.toString();
-console.log(searchQuery);
+      // console.log(searchQuery);
 
       try {
         const api = await axios.get(
@@ -42,6 +49,7 @@ console.log(searchQuery);
             withCredentials: true,
           }
         );
+        // console.log(api.data);
 
         if (!api.data) {
           setLoading(true);
@@ -57,9 +65,6 @@ console.log(searchQuery);
         setLoading(false);
       }
     };
-
-    fetchPost();
-  }, [location.search]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -80,18 +85,15 @@ console.log(searchQuery);
     navigate(`/search?${urlParams.toString()}`);
   };
 
-  if (loading) return <Loading />;
+
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
+    <div className="flex flex-col lg:flex-row min-h-screen ">
       {/* Sidebar */}
-      <div className="w-full lg:w-[20%] border-r p-6 bg-white shadow-md">
+      <div className="w-full lg:w-[20%] border-r p-6 bg- text-gray-500 shadow-md">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="flex flex-col">
-            <label
-              htmlFor="searchTerm"
-              className="text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="searchTerm" className="text-sm font-medium  mb-1">
               Search Term
             </label>
             <input
@@ -105,10 +107,7 @@ console.log(searchQuery);
           </div>
 
           <div className="flex flex-col">
-            <label
-              htmlFor="sort"
-              className="text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="sort" className="text-sm font-medium mb-1">
               Sort By
             </label>
             <select
@@ -124,10 +123,7 @@ console.log(searchQuery);
           </div>
 
           <div className="flex flex-col">
-            <label
-              htmlFor="category"
-              className="text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="category" className="text-sm font-medium  mb-1">
               Category
             </label>
             <select
@@ -157,28 +153,31 @@ console.log(searchQuery);
 
       {/* Posts Grid */}
       <div className="w-full lg:w-[80%] p-6">
-        {posts.length === 0 ? (
-          <p className="text-gray-600">No posts found.</p>
+        {posts?.length === 0 ? (
+          <div>
+             <Loading />
+          <p className="text-gray-600 text-center">No posts found.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post, index) => (
+            {posts?.map((post, index) => (
               <div
                 key={index}
                 className="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
-               <Link to={`/post/${post.slug}`}> 
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
-               </Link>
+                <Link to={`/post/${post?.slug}`}>
+                  <img
+                    src={post?.image}
+                    alt={post?.title}
+                    className="w-full h-48 object-cover"
+                  />
+                </Link>
                 <div className="p-4">
                   <p className="text-sm text-indigo-600 font-medium mb-1 uppercase">
-                    {post.category}
+                    {post?.category}
                   </p>
                   <h2 className="text-lg font-semibold text-gray-800 line-clamp-2">
-                    {post.title}
+                    {post?.title}
                   </h2>
                 </div>
               </div>
