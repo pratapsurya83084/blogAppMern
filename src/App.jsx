@@ -15,6 +15,7 @@ import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollTotop from "./components/ScrollTotop";
 import AllPosts from "./pages/AllPosts";
+import Search from "./pages/Search";
 function App() {
   return (
     <Router>
@@ -27,6 +28,7 @@ function App() {
 
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<Signin />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/allpost" element={<AllPosts />} />
         <Route path="/post/:slug" element={<PostPage />} />
 

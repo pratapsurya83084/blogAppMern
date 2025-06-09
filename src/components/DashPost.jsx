@@ -35,7 +35,7 @@ const DashPost = () => {
       if (token === "expire" || response.data.success === false) {
         toast.error(response.data.message || "Unauthorized or session expired");
         console.log("Invalid or missing token:", token);
-        setLoading(false); // important to stop loading
+        setLoading(true); // important to stop loading
         return;
       }
       if (response.data.totalPosts > 7) {

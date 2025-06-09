@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,7 +6,7 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { DeleteUser } from "../redux/user/userSlice";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,14 +16,26 @@ const Header = () => {
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
+  const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
+
+  // console.log(searchTerm);
+
+useEffect(() => {
+  const urlParams = new URLSearchParams(location.search);
+  const searchTermFromUrl = urlParams.get("searchTerm");
+  if (searchTermFromUrl) {
+    setSearchTerm(searchTermFromUrl);
+  }
+}, [location.search]);
+
+
   // console.log(currentUser?.user);
   // console.log(theme);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   //SignoutProfile
   const SignoutProfile = async () => {
- 
-
     Swal.fire({
       title: "Are you sure?",
       text: "You want to Signout ?",
@@ -66,6 +78,16 @@ const Header = () => {
     });
   };
 
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (!searchTerm.trim()) return;
+
+  const urlParams = new URLSearchParams(location.search);
+  urlParams.set("searchTerm", searchTerm.trim());
+  navigate(`/search?${urlParams.toString()}`);
+};
+
+
   return (
     <header
       className={`${
@@ -85,12 +107,19 @@ const Header = () => {
 
         {/* Search Input (desktop only) */}
         <div className="hidden lg:flex items-center space-x-2">
-          <input
-            type="text"
-            placeholder="Search here..."
-            className="px-2 py-1 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <FaSearch className="text-gray-600 text-xl" />
+         <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+  <input
+    type="text"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    placeholder="Search here..."
+    className="px-2 py-1 rounded border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  />
+  <button type="submit">
+    <FaSearch className="text-gray-600 text-xl" />
+  </button>
+</form>
+
         </div>
 
         {/* Desktop Menu */}
@@ -101,8 +130,8 @@ const Header = () => {
           <Link to="/about" className=" hover:text-indigo-500">
             About
           </Link>
-       
-          <Link to={`/dashboard?tab=dashboard`} className=" hover:text-indigo-500">
+
+          <Link to={`/dashboard`} className=" hover:text-indigo-500">
             Dashboard
           </Link>
 
@@ -166,7 +195,6 @@ const Header = () => {
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center space-x-3">
-          <FaSearch className="text-gray-600 text-xl" />
           {currentUser?.user ? (
             <div
               className="relative"
@@ -239,8 +267,8 @@ const Header = () => {
           <Link to="/about" className="block ">
             About
           </Link>
-       
-          <Link to={`/dashboard?tab=dashboard`} className="block ">
+
+          <Link to={`/dashboard`} className="block ">
             Dashboard
           </Link>
         </div>

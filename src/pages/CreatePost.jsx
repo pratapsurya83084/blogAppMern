@@ -246,12 +246,12 @@ const CreatePost = () => {
           className="border p-2 w-full text-black"
         >
           <option value="">Select Category</option>
-          <option value="Reactjs">ReactJS</option>
-          <option value="NodeJS">NodeJS</option>
-          <option value="Sport">Sport</option>
-          <option value="Nature">Nature</option>
-          <option value="Health">Health</option>
-          <option value="Technology">Technology</option>
+          <option value="reactjs">ReactJS</option>
+          <option value="nodeJS">NodeJS</option>
+          <option value="sport">Sport</option>
+          <option value="nature">Nature</option>
+          <option value="health">Health</option>
+          <option value="technology">Technology</option>
         </select>
 
         <input
