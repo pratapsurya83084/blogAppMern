@@ -2,15 +2,15 @@ import React from 'react';
 
 const About = () => {
   return (
-    <div className="bg-gradient-to-b from- py-20 px-6">
-      <div className="max-w-6xl mx-auto text-gray-500">
+    <div className=" bg-white text-black dark:bg-slate-900 dark:text-gray-200 bg-gradient-to-b from- py-20 px-6">
+      <div className="max-w-6xl mx-auto ">
         {/* Title */}
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-6">
           About <span className="text-blue-600">Our Blog</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg text-center text-gray-500 max-w-3xl mx-auto mb-14">
+        <p className="text-lg text-center  max-w-3xl mx-auto mb-14">
           We’re passionate about writing meaningful content to help readers stay informed, inspired, and engaged. Welcome to your new favorite corner of the internet.
         </p>
 
@@ -44,7 +44,7 @@ const About = () => {
         {/* Call to Action */}
         <div className="mt-12 text-center">
           <h3 className="text-xl font-semibold mb-2">📬 Stay Connected</h3>
-          <p className="text-gray-500">
+          <p className="">
             Follow us on social media or subscribe for fresh posts every week!
           </p>
         </div>

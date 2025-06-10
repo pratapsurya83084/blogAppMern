@@ -14,6 +14,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "./Loading";
 
+
+const url="https://blog-mern-api-3.onrender.com/api"
 const DashBoardOverviews = () => {
   const [User, setUsers] = useState();
   const [Comments, setComments] = useState();
@@ -26,7 +28,7 @@ const DashBoardOverviews = () => {
 
   const fetchUsers = async () => {
     try {
-      const api = await axios.get("http://localhost:4000/api/user/getusers", {
+      const api = await axios.get(`${url}/user/getusers`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -45,7 +47,7 @@ const DashBoardOverviews = () => {
   const fetchComments = async () => {
     try {
       const api = await axios.get(
-        "http://localhost:4000/api/comment/getallcomment",
+        `${url}/comment/getallcomment`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +67,7 @@ const DashBoardOverviews = () => {
 
   const fetchPosts = async () => {
     try {
-      const api = await axios.get("http://localhost:4000/api/post/getallpost", {
+      const api = await axios.get(`${url}/post/getallpost`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -102,7 +104,7 @@ if (loading) {
 }
 
   return (
-    <div className="mb-10">
+    <div className="mb-10  bg-white text-black dark:bg-slate-800 dark:text-gray-200">
       {/* flex 3 box */}
       <div className="flex flex-col md:flex-row justify-center items-center mt-5 md:p-5 gap-4">
         {/* Box 1: Total Users */}

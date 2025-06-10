@@ -6,6 +6,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
 import {useSelector}  from 'react-redux';
+
+
+const url="https://blog-mern-api-3.onrender.com/api"
+
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -13,17 +17,18 @@ const SignUp = () => {
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
  const {theme}=useSelector((state)=>state.theme)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username || !email || !email) {
       toast.error("please fill out all fields");
     }
-    console.log("Submit form:", { username, email, password });
+    // console.log("Submit form:", { username, email, password });
     // Add your signup logic here
     try {
       setLoading(true);
       const api = await axios.post(
-        `http://localhost:4000/api/auth/signup`,
+        `${url}/auth/signup`,
         { username, email, password },
         {
           headers: {
@@ -39,14 +44,14 @@ const SignUp = () => {
         navigate("/sign-in");
       }
       setLoading(false);
-    } catch (error) {
+    } catch (error) { 
       console.log("error while fetching signup api:", error);
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row mb-10">
+    <div className="bg-white text-black dark:bg-slate-900 dark:text-gray-200 min-h-screen flex flex-col md:flex-row mb-">
       <ToastContainer
         position="top-right"
         autoClose="2000"
@@ -70,7 +75,7 @@ const SignUp = () => {
         </svg>
 
         <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-extrabold text-indigo-700 mb-4">
+          <h1 className="text-4xl font-extrabold text-indigo-600 mb-4">
             Pratap's Blog
           </h1>
           <p className=" max-w-md mx-auto">

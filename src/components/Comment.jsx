@@ -7,6 +7,9 @@ import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 
+
+const url="https://blog-mern-api-3.onrender.com/api"
+
 const Comment = ({ comment, onLike }) => {
   const [isEdit, setisEdit] = useState(false);
   const [user, setUser] = useState(null);
@@ -18,7 +21,7 @@ const Comment = ({ comment, onLike }) => {
     const getUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/user/${comment.userId}`
+          `${url}/user/${comment.userId}`
         );
 
         if (response.data.success === true) {
@@ -63,7 +66,7 @@ const Comment = ({ comment, onLike }) => {
 
     try {
       const api = await axios.put(
-        `http://localhost:4000/api/comment/update-comment/${commentId}`,
+        `${url}/comment/update-comment/${commentId}`,
         {
           comment: editedText,
         },
@@ -112,7 +115,7 @@ const Comment = ({ comment, onLike }) => {
         async function deletComment() {
           try {
             const response = await axios.delete(
-              `http://localhost:4000/api/comment/delete-comment/${commentId}`,
+              `${url}/comment/delete-comment/${commentId}`,
 
               {
                 headers: {
@@ -137,7 +140,7 @@ const Comment = ({ comment, onLike }) => {
   };
 
   return (
-    <div className="flex gap-4 p-2 border-b border-gray-200">
+    <div className=" bg-white text-black dark:bg-slate-900 dark:text-gray-200 flex gap-4 p-2 border-b border-gray-200">
       <Toaster position="top-right" reverseOrder={false} />
       <img
         className="w-10 h-10 rounded-full bg-gray-200 object-cover"
@@ -146,7 +149,7 @@ const Comment = ({ comment, onLike }) => {
       />
 
       <div className="flex-1">
-        <div className="text-xs text-gray-500 mb-1">
+        <div className="text-xs text-gray-500 mb-1 p-2">
           <span className="font-bold mr-2">
             {user ? `@${user.username}` : "Anonymous User"}
           </span>

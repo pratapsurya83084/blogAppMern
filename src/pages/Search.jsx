@@ -3,6 +3,8 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
 
+const url="https://blog-mern-api-3.onrender.com/api"
+
 const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,7 +43,7 @@ const Search = () => {
 
       try {
         const api = await axios.get(
-          `http://localhost:4000/api/post/getallpost?${searchQuery}`,
+          `${url}/post/getallpost?${searchQuery}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -88,9 +90,9 @@ const Search = () => {
 
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen ">
+    <div className="bg-white text-black dark:bg-slate-900 dark:text-gray-200 flex flex-col lg:flex-row min-h-screen ">
       {/* Sidebar */}
-      <div className="w-full lg:w-[20%] border-r p-6 bg- text-gray-500 shadow-md">
+      <div className="w-full lg:w-[20%] border-r p-6 bg-  shadow-md">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <label htmlFor="searchTerm" className="text-sm font-medium  mb-1">

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const PostCard = ({ post }) => {
   return (
-    <div className="max-w-sm rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group relative h-full border dark:border">
+    <div className=" bg-white text-black dark:bg-slate-800 dark:text-gray-200 max-w-sm rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group relative h-full border dark:border">
       <Link to={`/post/${post.slug}`}>
         <img
           src={post.image}
@@ -13,7 +13,7 @@ const PostCard = ({ post }) => {
       </Link>
 
      <div className="p-4">
-  <div className="flex justify-between items-center text-xs text-gray-500 mb-1">
+  <div className="flex justify-between items-center text-xs  mb-1">
     <span className="uppercase text-indigo-600 font-semibold">{post.category}</span>
     <span>{new Date(post.createdAt).toLocaleDateString()}</span>
   </div>

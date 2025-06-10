@@ -7,10 +7,13 @@ const Users = () => {
   const [loading, setLoading] = useState(true);
   const [Users, setUsers] = useState();
 
+
+const url="https://blog-mern-api-3.onrender.com/api"
+
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/user/getusers`,
+        `${url}/user/getusers`,
         {
           withCredentials: true,
         }
@@ -53,7 +56,7 @@ const Users = () => {
 
     try {
       const api = await axios.delete(
-        `http://localhost:4000/api/user/deleteuserbyadmin/${id}`,
+        `${url}/user/deleteuserbyadmin/${id}`,
         {
           withCredentials: true,
         }

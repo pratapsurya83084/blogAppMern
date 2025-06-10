@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Comment from "./Comment";
 
+const url="https://blog-mern-api-3.onrender.com/api"
 const CommentAdd = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
@@ -16,7 +17,7 @@ const CommentAdd = ({ postId }) => {
   const fetchComment = async () => {
     try {
       const api = await axios.get(
-        `http://localhost:4000/api/comment/getpostcomment/${postId}`
+        `${url}/comment/getpostcomment/${postId}`
       );
       if (api.data.success === true) {
         setComments(api.data.comment);
@@ -39,7 +40,7 @@ const CommentAdd = ({ postId }) => {
 
     try {
       const api = await axios.post(
-        `http://localhost:4000/api/comment/create-comment`,
+        `${url}/comment/create-comment`,
         { comment: text, userId, postId },
         {
           headers: {
@@ -76,7 +77,7 @@ const CommentAdd = ({ postId }) => {
       }
 
       const api = await axios.put(
-        `http://localhost:4000/api/comment/like-post/${commentId}`,
+        `${url}/comment/like-post/${commentId}`,
         {},
         {
           headers: {
@@ -113,7 +114,7 @@ const CommentAdd = ({ postId }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto my-12 px-4">
+    <div className="p-2 bg-white text-black dark:bg-slate-800 dark:text-gray-200 max-w-3xl mx-auto my-12 px-4">
       <ToastContainer position="top-right" autoClose={2000} />
 
       {/* User info */}

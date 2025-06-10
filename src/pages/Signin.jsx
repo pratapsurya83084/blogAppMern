@@ -13,6 +13,8 @@ import {
 
 import OAuth from "../components/OAuth";
 
+const url="https://blog-mern-api-3.onrender.com/api"
+
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,13 +31,13 @@ const Signin = () => {
       toast.error("please fill out all fields");
       return;
     }
-    console.log("Submit form:", { email, password });
+    // console.log("Submit form:", { email, password });
     // Add your signup logic here
     try {
       dispatch(signInStart());
 
       const api = await axios.post(
-        `http://localhost:4000/api/auth/signin`,
+        `${url}/auth/signin`,
         {
           email,
           password,
@@ -44,10 +46,10 @@ const Signin = () => {
           headers: {
             "Content-type": "application/json",
           },
-           withCredentials: true,
+          withCredentials: true,
         }
       );
-      // console.log("signin suceess :", api.data.success);
+      console.log("signin suceess :", api.data.success);
       if (api.data.success == false) {
         toast.error(api.data.message);
         dispatch(signInFailure("please fill the form with correct credential"));
@@ -66,7 +68,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="bg-white text-black dark:bg-slate-900 dark:text-gray-200 min-h-screen flex flex-col md:flex-row">
       <ToastContainer
         position="top-right"
         autoClose="2000"
@@ -90,7 +92,7 @@ const Signin = () => {
         </svg>
 
         <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-extrabold dark:text-indigo-700 mb-4">
+          <h1 className="text-4xl font-extrabold text-indigo-600 mb-4">
             Pratap's Blog
           </h1>
           <p className=" max-w-md mx-auto">

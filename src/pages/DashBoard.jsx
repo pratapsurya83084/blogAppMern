@@ -20,9 +20,9 @@ const DashBoard = () => {
   }, [location.search]);
 
   return (
-   <div className="flex flex-col md:flex-row md:h-screen overflow-hidden">
+   <div className="bg-white text-black dark:bg-slate-900 dark:text-gray-200 flex flex-col md:flex-row md:h-screen overflow-hidden">
   {/* Sidebar */}
-  <div className="w-full md:w-64 bg-gray-100 border-r">
+  <div className="w-full md:w-64 border-r bg-white text-black dark:bg-slate-800 dark:text-gray-200">
     <DashSidebar />
   </div>
 

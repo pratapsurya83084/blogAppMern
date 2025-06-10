@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import { Link ,useNavigate } from "react-router-dom";
 
+const url="https://blog-mern-api-3.onrender.com/api"
+
 const DashPost = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +26,7 @@ const DashPost = () => {
   const fetchBlogs = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/post/getallpost`,
+        `${url}/post/getallpost`,
         {
           withCredentials: true,
         }
@@ -64,7 +66,7 @@ const DashPost = () => {
     }
     try {
       const api = await axios.delete(
-        `http://localhost:4000/api/post/delete-post/${postId}/${userId}`,
+        `${url}/post/delete-post/${postId}/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",

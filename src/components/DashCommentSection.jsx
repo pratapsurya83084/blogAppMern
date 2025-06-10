@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const url="https://blog-mern-api-3.onrender.com/api"
 const DashCommentSection = () => {
   const [loading, setLoading] = useState(true);
   const [Comment, setComment] = useState();
@@ -11,7 +12,7 @@ const DashCommentSection = () => {
   const fetchComment = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/comment/getallcomment`,
+        `${url}/comment/getallcomment`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -57,7 +58,7 @@ const DashCommentSection = () => {
 
     try {
       const api = await axios.delete(
-        `http://localhost:4000/api/comment/delete-comment/${commentId}`,
+        `${url}/comment/delete-comment/${commentId}`,
         {
           withCredentials: true,
         }

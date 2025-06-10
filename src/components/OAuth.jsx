@@ -8,6 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
+const url="https://blog-mern-api-3.onrender.com/api"
+
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 533.5 544.3">
     <path
@@ -47,7 +49,7 @@ const OAuth = () => {
       // console.log("Google User Email:", decoded.email); // optional logging
 
       const api = await axios.post(
-        "http://localhost:4000/api/auth/google",
+        `${url}/auth/google`,
         {
           email: decoded.email,
           name: decoded.given_name,
@@ -76,7 +78,7 @@ const OAuth = () => {
   };
 
   return (
-    <div>
+    <div className="">
       {" "}
       <ToastContainer
         position="top-right"

@@ -6,6 +6,9 @@ import { useSelector } from "react-redux";
 import CalltoAction from "../components/CalltoAction";
 import CommentAdd from "../components/CommentAdd";
 import PostCard from "../components/PostCard";
+
+
+const url="https://blog-mern-api-3.onrender.com/api"
 const PostPage = () => {
   const [post, setPost] = useState(null);
   const { slug } = useParams();
@@ -23,7 +26,7 @@ const PostPage = () => {
     const fetchPost = async () => {
       try {
         const api = await axios.get(
-          "http://localhost:4000/api/post/getallpost",
+          `${url}/post/getallpost`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -50,7 +53,7 @@ const PostPage = () => {
     const fetchRecentPost = async () => {
       try {
         const api = await axios.get(
-          `http://localhost:4000/api/post/getallpost?limit=3`
+          `${url}/post/getallpost?limit=3`
         );
         // console.log(api.data.BlogPost);
         if (api.data) {
@@ -69,9 +72,7 @@ const PostPage = () => {
 
   return (
     <main
-      className={`${
-        theme === "dark" ? "text-black " : " text-white"
-      } min-h-screen py-10 px-4 md:px-10 lg:px-20 transition-colors duration-300`}
+      className={`bg-white text-black dark:bg-slate-900 dark:text-gray-200 min-h-screen py-10 px-4 md:px-10 lg:px-20 transition-colors duration-300`}
     >
       {/* Post Header */}
       <div className="max-w-4xl mx-auto">
@@ -109,18 +110,14 @@ const PostPage = () => {
 
         {/* Post Content */}
         <div
-          className={`prose prose-lg max-w-none text-justify leading-loose text-sm md:text-xl
-            ${
-              theme === "dark"
-                ? "text-black"
-                : "text-white prose-headings:text-white"
-            }
-            `}
+          className={`prose prose-lg max-w-none text-justify leading-loose text-sm md:text-xl`}
         >
-          <div
-            className="post-content"
-            dangerouslySetInnerHTML={{ __html: post?.content }}
-          />
+<div
+  className="prose prose-sm max-w-none text-black dark:prose-invert dark:text-gray-200 bg-white dark:bg-slate-900 p-4 rounded"
+  dangerouslySetInnerHTML={{ __html: post?.content }}
+/>
+
+
         </div>
         <div>
           <CalltoAction />

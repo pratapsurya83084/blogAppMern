@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast ,Toaster} from "react-hot-toast";
-
+const url="https://blog-mern-api-3.onrender.com/api"
 const CalltoAction = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -17,7 +17,7 @@ const [Loading ,setLoading]=useState(false);
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:4000/api/user/subscribe/sendmail",
+        `${url}/user/subscribe/sendmail`,
         {
           email,
         }

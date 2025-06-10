@@ -16,6 +16,8 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteUser } from "../redux/user/userSlice";
 
+
+const url="https://blog-mern-api-3.onrender.com/api"
 const DashSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ const DashSidebar = () => {
         async function outUser() {
           try {
             const api = await axios.post(
-              `http://localhost:4000/api/auth/signout`,
+              `${url}/auth/signout`,
               {},
               {
                 headers: {
@@ -85,11 +87,7 @@ const DashSidebar = () => {
   
   return (
     <div
-      className={`w-full md:w-64 md:min-h-screen ${
-        theme == "dark"
-          ? "text-black shadow-2xl border border-gray-300"
-          : "bg-slate-800"
-      }   p-4`}
+      className={`w-full md:w-64 border-4 md:min-h-screen bg-white   dark:border text-black dark:bg-slate-800 dark:text-gray-200  p-4`}
     >
       <ToastContainer
         position="top-right"
@@ -129,7 +127,7 @@ const DashSidebar = () => {
           >
             <FaUser className="text-lg" />
             <span>Profile</span>
-            <span className="bg-slate-700 text-xs px-2 py-0.5 rounded ml-auto">
+            <span className="bg-slate-500 text-xs px-2 py-0.5 rounded ml-auto">
               {currentUser?.user.isAdmin ? "Admin" : "User"}
             </span>
           </li>

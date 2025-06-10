@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
+
 const AllPosts = () => {
   const [Posts, setPosts] = useState();
   const [loading, setLoading] = useState(true);
 
+  const url = "https://blog-mern-api-3.onrender.com/api";
+
   const fetchPosts = async () => {
     try {
-      const api = await axios.get("http://localhost:4000/api/post/getallpost", {
+      const api = await axios.get(`${url}/post/getallpost`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -37,15 +40,15 @@ const AllPosts = () => {
   }
 
   return (
-    <div className="mb-10">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mt-10 text-gray-500">
+    <div className="mb- bg-white text-black dark:bg-slate-900 dark:text-gray-200 ">
+      <h1 className="text-3xl md:text-4xl font-bold text-center pt-10 md:pt-20 ">
         📚 Latest Blog Posts
       </h1>
-      <p className="text-center text-gray-500 mt-2 px-4 md:px-0 max-w-2xl mx-auto">
+      <p className="text-center  mt-2 px-4 md:px-0 max-w-2xl mx-auto">
         Explore our latest insights, stories, and updates on technology,
         business, lifestyle, and more.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-10 px-4 text-gray-500">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-10 px-4  pb-10 md:pb-20">
         {Posts?.map((post, index) => (
           <div
             key={index}

@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
+const url="https://blog-mern-api-3.onrender.com/api"
 const DashProfile = () => {
   const { currentUser , Loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const DashProfile = () => {
       const userId = currentUser.user._id; // or currentUser.userId if structured differently
 
       const api = await axios.put(
-        `http://localhost:4000/api/user/update/${userId}`,
+        `${url}/user/update/${userId}`,
         formData,
         {
           withCredentials: true, // ✅ Important: send cookies
@@ -80,7 +81,7 @@ const DashProfile = () => {
         async function deleteUserConfirm() {
           try {
             const api = await axios.delete(
-              `http://localhost:4000/api/user/deleteUser-account/${userId}`,
+              `${url}/user/deleteUser-account/${userId}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -119,7 +120,7 @@ const DashProfile = () => {
         async function outUser() {
           try {
             const api = await axios.post(
-              `http://localhost:4000/api/auth/signout`,
+              `${url}/auth/signout`,
               {},
               {
                 headers: {

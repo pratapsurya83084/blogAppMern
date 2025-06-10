@@ -8,6 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 import TurndownService from "turndown";
 import { useSelector } from "react-redux";
 // Slugify function to clean title for URL
+const url="https://blog-mern-api-3.onrender.com/api"
+
+
+
 const slugify = (text) =>
   text
     .toLowerCase()
@@ -38,7 +42,7 @@ const UpdatePost = () => {
     const fetchPost = async () => {
       try {
         const apiRes = await axios.get(
-          `http://localhost:4000/api/post/getallpost?postId=${postId}`,
+          `${url}/post/getallpost?postId=${postId}`,
           {
             headers: { "Content-Type": "multipart/form-data" },
             withCredentials: true,
@@ -93,7 +97,7 @@ const UpdatePost = () => {
       // console.log(postFormData.title);
 
       const response = await axios.put(
-        `http://localhost:4000/api/post/updatepost/${postId}/${userId}`,
+        `${url}/post/updatepost/${postId}/${userId}`,
         postFormData,
         {
           headers: {
@@ -131,7 +135,8 @@ const UpdatePost = () => {
   };
 
   return (
-    <div className="p-4 max-w-4xl lg:max-w-7xl mx-auto min-h-screen">
+   <div className="bg-white text-black dark:bg-slate-900 dark:text-gray-200">
+     <div className="bg-white text-black dark:bg-slate-900 dark:text-gray-200 p-4 max-w-4xl lg:max-w-7xl mx-auto min-h-screen">
       <ToastContainer position="top-right" autoClose={4000} />
       <h1 className="text-2xl font-bold mb-4">Update Post</h1>
 
@@ -225,6 +230,7 @@ const UpdatePost = () => {
         </button>
       </form>
     </div>
+   </div>
   );
 };
 

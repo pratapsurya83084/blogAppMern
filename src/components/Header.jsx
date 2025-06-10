@@ -8,6 +8,10 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DeleteUser } from "../redux/user/userSlice";
+
+
+const url="https://blog-mern-api-3.onrender.com/api"
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -31,7 +35,7 @@ useEffect(() => {
 
 
   // console.log(currentUser?.user);
-  // console.log(theme);
+  console.log(theme);
   const navigate = useNavigate();
 
   //SignoutProfile
@@ -49,7 +53,7 @@ useEffect(() => {
         async function outUser() {
           try {
             const api = await axios.post(
-              `http://localhost:4000/api/auth/signout`,
+              `${url}/auth/signout`,
               {},
               {
                 headers: {
@@ -90,11 +94,7 @@ const handleSubmit = (e) => {
 
   return (
     <header
-      className={`${
-        theme === "light"
-          ? "dark:text-gray-200 bg-slate-800 "
-          : "text-black bg-white shadow-lg"
-      } shadow-[0_2px_4px_rgba(255,255,255,0.2)]   p-4 sticky top-0 z-50`}
+className="bg-white text-black dark:bg-slate-800 dark:text-gray-200 shadow-lg p-4 sticky top-0 z-50"
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
@@ -187,7 +187,7 @@ const handleSubmit = (e) => {
           {/* Dark Mode Toggle */}
           <button
             onClick={() => dispatch(toggleTheme())}
-            className="text-xl text-gray-600"
+            className="text-xl "
           >
             {theme === "light" ? <FaSun /> : <FaMoon />}
           </button>
@@ -244,15 +244,15 @@ const handleSubmit = (e) => {
 
           <button
             onClick={() => dispatch(toggleTheme())}
-            className="text-xl text-gray-600"
+            className="text-xl "
           >
             {theme === "light" ? <FaSun /> : <FaMoon />}
           </button>
           <button onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? (
-              <FaTimes className="text-gray-600 text-xl" />
+              <FaTimes className=" text-xl" />
             ) : (
-              <FaBars className="text-gray-600 text-xl" />
+              <FaBars className=" text-xl" />
             )}
           </button>
         </div>
